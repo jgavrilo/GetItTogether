@@ -1,3 +1,8 @@
+// Prevent clicks from closing the popup
+document.body.addEventListener("click", function(event) {
+    event.stopPropagation();
+});
+
 // Get references to elements
 const startButton = document.getElementById("startTimer");
 const startBreakButton = document.getElementById("startBreak");
@@ -23,7 +28,7 @@ function showInputContent(workTime, breakTime) {
     }
 }
 
-// Timer logic
+//ANCHOR: Timer logic
 function startTimer(duration, callback) {
     let totalTime = duration * 60;  // Convert minutes to seconds
     const displayTimer = document.getElementById("timer");
@@ -39,6 +44,8 @@ function startTimer(duration, callback) {
                 clearInterval(timerInterval);
                 if (callback) callback(); // Call the passed callback function when timer runs out
             }
+        } else {
+            clearInterval(timerInterval); // Clear the interval if totalTime is negative
         }
     };
 
@@ -52,9 +59,11 @@ function startTimer(duration, callback) {
     }
 }
 
+//ANCHOR: Event listener for start button
+startButton.addEventListener("click", function(event) {
+    // Prevent clicks on the start button from closing the popup
+    event.stopPropagation();
 
-// Event listener for start button
-startButton.addEventListener("click", function() {
     const workTimeInput = document.getElementById("workTime");
     const inputSection = document.getElementById("inputSection");
     const countdownSection = document.getElementById("countdown");
@@ -66,7 +75,10 @@ startButton.addEventListener("click", function() {
 
     startTimer(workTime, function() {
         startBreakButton.style.display = "block";
-        startBreakButton.addEventListener("click", function() {
+        startBreakButton.addEventListener("click", function(event) {
+            // Prevent clicks on the start break button from closing the popup
+            event.stopPropagation();
+
             const breakTimeInput = document.getElementById("breakTime");
             const breakTime = parseInt(breakTimeInput.value) || 0;
 
@@ -74,7 +86,10 @@ startButton.addEventListener("click", function() {
             startTimer(breakTime, function() {
                 startBreakButton.style.display = "none";
                 endBreakButton.style.display = "block";
-                endBreakButton.addEventListener("click", function() {
+                endBreakButton.addEventListener("click", function(event) {
+                    // Prevent clicks on the end break button from closing the popup
+                    event.stopPropagation();
+
                     inputSection.style.display = "block";
                     endBreakButton.style.display = "none";
                     countdownSection.style.display = "none";

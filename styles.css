@@ -2,6 +2,8 @@
 body {
     width: 300px;
     height: 200px;
+    min-width: 300px;
+    min-width: 200px;
     font-family: Arial, sans-serif; /* Optional, just makes text look a bit nicer */
     padding: 10px; /* Adds some spacing around the content */
 }
