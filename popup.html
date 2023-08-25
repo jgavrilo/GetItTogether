@@ -6,18 +6,20 @@
 <body>
     <div id="inputSection">
         <div>
-            <label>Work Time (mins):</label>
+            <label for="workTime">Work Time (mins):</label>
             <input type="number" id="workTime">
         </div>
         <div>
-            <label>Break Time (mins):</label>
+            <label for="breakTime">Break Time (mins):</label>
             <input type="number" id="breakTime">
         </div>
         <button id="startTimer">Start Timer</button>
     </div>
+    
     <div id="countdown" style="display: none;">
         <h2>Time left: <span id="timer"></span></h2>
         <button id="startBreak" style="display: none;">Start Break</button>
+        <button id="endBreak" style="display: none;">End Break</button>
     </div>
     
     <script src="popup.js"></script>
