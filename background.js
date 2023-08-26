@@ -30,3 +30,31 @@ chrome.alarms.onAlarm.addListener(function(alarm) {
         });
     }
 });
+
+let timer;
+const alarmSound = new Audio('audio/alarm.mp3'); // Replace with the actual path to your alarm sound file
+
+function startTimer(seconds) {
+    clearInterval(timer);
+
+    timer = setInterval(() => {
+        if (seconds <= 0) {
+            clearInterval(timer);
+            playAlarm();
+        } else {
+            seconds--;
+        }
+    }, 1000);
+}
+
+function playAlarm() {
+    alarmSound.play();
+}
+
+// Listen for messages from other parts of your extension (e.g., popup)
+chrome.runtime.onMessage.addListener((message) => {
+    if (message.action === 'startTimer') {
+        const seconds = message.seconds || 0;
+        startTimer(seconds);
+    }
+});

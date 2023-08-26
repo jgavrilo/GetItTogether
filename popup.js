@@ -12,6 +12,7 @@ const timerContent = document.getElementById("countdown");
 const inputContent = document.getElementById("inputSection");
 
 let timerInterval; // Declare the timerInterval variable
+let alarmSound; // Declare the alarm sound variable at a broader scope
 
 // After the break timer is over
 // Show input content and populate input fields with previous input values
@@ -28,9 +29,23 @@ function showInputContent(workTime, breakTime) {
     }
 }
 
-//ANCHOR: Timer logic
+// Play the alarm sound
+function playAlarm() {
+    alarmSound = new Audio('audio/alarm.mp3'); // Replace with the actual path to your alarm sound file
+    alarmSound.play();
+}
+
+// Stop the alarm sound
+function stopAlarm() {
+    if (alarmSound) {
+        alarmSound.pause();
+        alarmSound.currentTime = 0;
+    }
+}
+
+// Timer logic
 function startTimer(duration, callback) {
-    let totalTime = duration * 60;  // Convert minutes to seconds
+    let totalTime = duration * 60; // Convert minutes to seconds
     const displayTimer = document.getElementById("timer");
 
     const updateTimerDisplay = () => {
@@ -42,6 +57,7 @@ function startTimer(duration, callback) {
 
             if (totalTime < 0) {
                 clearInterval(timerInterval);
+                playAlarm(); // Play the alarm sound
                 if (callback) callback(); // Call the passed callback function when timer runs out
             }
         } else {
@@ -59,7 +75,7 @@ function startTimer(duration, callback) {
     }
 }
 
-//ANCHOR: Event listener for start button
+// Event listener for start button
 startButton.addEventListener("click", function(event) {
     // Prevent clicks on the start button from closing the popup
     event.stopPropagation();
@@ -83,6 +99,7 @@ startButton.addEventListener("click", function(event) {
             const breakTime = parseInt(breakTimeInput.value) || 0;
 
             startBreakButton.style.display = "none";
+            stopAlarm(); // Stop the alarm sound if it's playing
             startTimer(breakTime, function() {
                 startBreakButton.style.display = "none";
                 endBreakButton.style.display = "block";
@@ -92,7 +109,9 @@ startButton.addEventListener("click", function(event) {
 
                     inputSection.style.display = "block";
                     endBreakButton.style.display = "none";
-                    countdownSection.style.display = "none";
+                    countdownSection.style.display = "none";    
+                    stopAlarm(); // Stop the alarm sound if it's playing
+
                 });
             });
         });
