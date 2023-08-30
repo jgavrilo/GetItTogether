@@ -1,8 +1,3 @@
-// Prevent clicks from closing the popup
-document.body.addEventListener("click", function(event) {
-    event.stopPropagation();
-});
-
 // Get references to elements
 const startButton = document.getElementById("startTimer");
 const startBreakButton = document.getElementById("startBreak");
@@ -31,7 +26,7 @@ function showInputContent(workTime, breakTime) {
 
 // Play the alarm sound
 function playAlarm() {
-    alarmSound = new Audio('audio/alarm.mp3'); // Replace with the actual path to your alarm sound file
+    alarmSound = new Audio('audio/alarm.mp3');
     alarmSound.play();
 }
 
