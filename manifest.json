@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "Work-Mode-Timer",
+  "name": "My Tool Set",
   "version": "1.0",
-  "description": "A simple work and break timer for Chrome.",
+  "description": "A tool set for chrome",
   "permissions": ["alarms", "activeTab", "storage"],
   "action": {
     "default_popup": "popup.html",
