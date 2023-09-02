@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "My Tool Set",
+  "name": "My Chrome Tool Set",
   "version": "1.0",
   "description": "A tool set for chrome",
   "permissions": ["alarms", "activeTab", "storage"],
