@@ -3,7 +3,7 @@
   "name": "Work-Mode-Timer",
   "version": "1.0",
   "description": "A simple work and break timer for Chrome.",
-  "permissions": ["alarms", "activeTab"],
+  "permissions": ["alarms", "activeTab", "storage"],
   "action": {
     "default_popup": "popup.html",
     "default_icon": {
