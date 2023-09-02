@@ -1,6 +1,5 @@
 // Global variable to hold reference to the opened window
 let timerWindow = null;
-
 const timerWindowName = 'Timer';
 const timerButtonId = 'openTimer';
 const timerFile = 'timer.html';
@@ -21,16 +20,16 @@ document.getElementById(timerButtonId).addEventListener('click', function() {
                 timerWindow.focus();
             } catch (e) {
                 // If focusing fails (perhaps because the window was closed or myWindow lost its reference), open a new one
-                openNewWindow();
+                openTimer();
             }
         } else {
             // If the window has never been opened, open a new one
-            openNewWindow();
+            openTimer();
         }
     }
 });
     
-function openNewWindow() {
+function openTimer() {
     timerWindow = window.open(timerFile, timerWindowName, timerWindowDimensions);
         
     // If the new window opens successfully, set the 'isTimerOpen' flag to true in localStorage
