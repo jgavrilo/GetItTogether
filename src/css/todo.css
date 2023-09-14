@@ -1,40 +1,99 @@
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
+    height: 100vh;
+    margin: 0;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#todoList, #inputSection {
+    background-color: #ffffff;
+    border-radius: 10px;
     padding: 20px;
+    box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.2);
+    width: 80%;
+    max-width: 400px;
+    margin-bottom: 20px;
+    font-size: 18px;
+}
+
+ul#todoList {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+#inputSection div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 10px 0;
+}
+
+label {
+    flex: 2;
+    font-weight: 500;
+}
+
+input[type="text"] {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+    width: 100%;
+}
+
+button {
+    background-color: #3498db;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 10px 2px;
+    cursor: pointer;
+    border-radius: 50px;
+    transition: background-color 0.3s ease;
+    margin-left: 10px;
+}
+
+button:hover {
+    background-color: #2980b9;
 }
 
 h2 {
     text-align: center;
+    margin-bottom: 20px;
 }
 
-ul {
-    list-style-type: none;
-    padding: 0;
+.todo-checkbox {
+    margin-right: 10px;
 }
 
-li {
-    padding: 8px;
-    border: 1px solid #ddd;
-    margin-top: -1px;
+#inputSection {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+#buttonSection {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
 }
 
 input[type="text"] {
-    width: 80%;
     padding: 10px;
-    margin: 10px 0;
-}
-
-button {
-    padding: 10px 15px;
-}
-
-.deleteTodo {
-    color: red;
-    cursor: pointer;
-    margin-right: 10px;
-    font-weight: bold;
-}
-
-.deleteTodo:hover {
-    text-decoration: underline;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+    width: calc(100% - 20px);  /* Adjusted width */
+    box-sizing: border-box;  /* Ensures padding and border are included in the width */
+    margin-bottom: 10px;
 }

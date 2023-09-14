@@ -3,30 +3,30 @@ document.getElementById('addTodo').addEventListener('click', function() {
     if (newTodo) {
         const li = document.createElement('li');
         
-        const deleteButton = document.createElement('span');
-        deleteButton.className = 'deleteTodo';
-        deleteButton.textContent = 'X';
-        li.appendChild(deleteButton);
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.className = 'todo-checkbox';
+        li.appendChild(checkbox);
         
         const span = document.createElement('span');
         span.className = 'todo-text';
-        span.textContent = ' ' + newTodo; // Added a space for separation
+        span.textContent = ' ' + newTodo;
         li.appendChild(span);
         
         document.getElementById('todoList').appendChild(li);
         document.getElementById('newTodo').value = '';
 
-        // Save the updated list to localStorage
         saveTodoList();
     }
 });
-
 
 function saveTodoList() {
     const todos = [];
     const items = document.querySelectorAll('#todoList li');
     items.forEach(item => {
-        todos.push(item.textContent);
+        const isChecked = item.querySelector('.todo-checkbox').checked;
+        const text = item.querySelector('.todo-text').textContent.trim();
+        todos.push({ text, isChecked });
     });
     localStorage.setItem('todoList', JSON.stringify(todos));
 }
@@ -41,27 +41,38 @@ function loadTodoList() {
     savedTodos.forEach(todo => {
         const li = document.createElement('li');
         
-        const deleteButton = document.createElement('span');
-        deleteButton.className = 'deleteTodo';
-        deleteButton.textContent = 'X';
-        li.appendChild(deleteButton);
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.className = 'todo-checkbox';
+        checkbox.checked = todo.isChecked;
+        li.appendChild(checkbox);
         
         const span = document.createElement('span');
         span.className = 'todo-text';
-        span.textContent = ' ' + todo; // Added a space for separation
+        span.textContent = ' ' + todo.text;
+        span.style.textDecoration = todo.isChecked ? 'line-through' : 'none';
         li.appendChild(span);
         
         todoList.appendChild(li);
     });
 }
 
-
 document.getElementById('todoList').addEventListener('click', function(e) {
-    if (e.target && e.target.className === 'deleteTodo') {
-        // Remove the item from the list
-        e.target.parentElement.remove();
-        
-        // Update localStorage
+    if (e.target && e.target.className === 'todo-checkbox') {
+        const textElement = e.target.nextSibling;
+        textElement.style.textDecoration = e.target.checked ? 'line-through' : 'none';
         saveTodoList();
     }
+});
+
+// Add this event listener at the end of your JavaScript file
+document.getElementById('clearCompleted').addEventListener('click', function() {
+    const items = document.querySelectorAll('#todoList li');
+    items.forEach(item => {
+        const isChecked = item.querySelector('.todo-checkbox').checked;
+        if (isChecked) {
+            item.remove();
+        }
+    });
+    saveTodoList();
 });

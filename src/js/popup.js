@@ -11,7 +11,7 @@ const todoWindowName = 'TodoList';
 const todoButtonId = 'openTodo';
 const todoFile = '../html/todo.html';
 const isTodoOpen = 'isTodoWindowOpen';
-const todoWindowDimensions = 'width=400,height=300';
+const todoWindowDimensions = 'width=400,height=500';
 
 document.getElementById(timerButtonId).addEventListener('click', function() {
     // Check if myWindow holds a value and the window isn't closed, then focus on it
