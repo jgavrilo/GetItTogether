@@ -1,0 +1,40 @@
+body {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+}
+
+h2 {
+    text-align: center;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
+    padding: 8px;
+    border: 1px solid #ddd;
+    margin-top: -1px;
+}
+
+input[type="text"] {
+    width: 80%;
+    padding: 10px;
+    margin: 10px 0;
+}
+
+button {
+    padding: 10px 15px;
+}
+
+.deleteTodo {
+    color: red;
+    cursor: pointer;
+    margin-right: 10px;
+    font-weight: bold;
+}
+
+.deleteTodo:hover {
+    text-decoration: underline;
+}

@@ -6,6 +6,13 @@ const timerFile = 'timer.html';
 const isTimerOpen = 'isTimerWindowOpen';
 const timerWindowDimensions = 'width=400,height=300';
 
+let todoWindow = null;
+const todoWindowName = 'TodoList';
+const todoButtonId = 'openTodo';
+const todoFile = 'todo.html';
+const isTodoOpen = 'isTodoWindowOpen';
+const todoWindowDimensions = 'width=400,height=300';
+
 document.getElementById(timerButtonId).addEventListener('click', function() {
     // Check if myWindow holds a value and the window isn't closed, then focus on it
     if (timerWindow) {
@@ -28,6 +35,24 @@ document.getElementById(timerButtonId).addEventListener('click', function() {
         }
     }
 });
+
+document.getElementById(todoButtonId).addEventListener('click', function() {
+    if (todoWindow) {
+        todoWindow.focus();
+    } else {
+        const isTodoWindowOpen = localStorage.getItem(isTodoOpen) === 'true';
+
+        if (isTodoWindowOpen) {
+            try {
+                todoWindow.focus();
+            } catch (e) {
+                openTodo();
+            }
+        } else {
+            openTodo();
+        }
+    }
+});
     
 function openTimer() {
     timerWindow = window.open(timerFile, timerWindowName, timerWindowDimensions);
@@ -39,6 +64,18 @@ function openTimer() {
         // Attach an event listener to reset the 'isTimerOpen' flag in localStorage when the window is closed
         timerWindow.onbeforeunload = function() {
             localStorage.setItem(isTimerOpen, 'false');
+        }
+    }
+}
+
+function openTodo() {
+    todoWindow = window.open(todoFile, todoWindowName, todoWindowDimensions);
+    
+    if (todoWindow) {
+        localStorage.setItem(isTodoOpen, 'true');
+        
+        todoWindow.onbeforeunload = function() {
+            localStorage.setItem(isTodoOpen, 'false');
         }
     }
 }
