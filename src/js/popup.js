@@ -2,14 +2,14 @@
 let timerWindow = null;
 const timerWindowName = 'Timer';
 const timerButtonId = 'openTimer';
-const timerFile = 'timer.html';
+const timerFile = '../html/timer.html';
 const isTimerOpen = 'isTimerWindowOpen';
 const timerWindowDimensions = 'width=400,height=300';
 
 let todoWindow = null;
 const todoWindowName = 'TodoList';
 const todoButtonId = 'openTodo';
-const todoFile = 'todo.html';
+const todoFile = '../html/todo.html';
 const isTodoOpen = 'isTodoWindowOpen';
 const todoWindowDimensions = 'width=400,height=300';
 

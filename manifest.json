@@ -4,17 +4,17 @@
   "version": "1.0",
   "description": "A tool set for chrome",
   "action": {
-    "default_popup": "popup.html",
+    "default_popup": "src/html/popup.html",
     "default_icon": {
-      "16": "images/tools-icon16.png",
-      "48": "images/tools-icon48.png",
-      "128": "images/tools-icon128.png"
+      "16": "assets/images/tools-icon16.png",
+      "48": "assets/images/tools-icon48.png",
+      "128": "assets/images/tools-icon128.png"
     }
   },
   "icons": {
-    "16": "images/tools-icon16.png",
-    "48": "images/tools-icon48.png",
-    "128": "images/tools-icon128.png"
+    "16": "assets/images/tools-icon16.png",
+    "48": "assets/images/tools-icon48.png",
+    "128": "assets/images/tools-icon128.png"
   }
  }
  

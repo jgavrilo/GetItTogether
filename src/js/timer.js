@@ -26,7 +26,7 @@ function showInputContent(workTime, breakTime) {
 
 // Play the alarm sound
 function playAlarm() {
-    alarmSound = new Audio('audio/alarm.mp3');
+    alarmSound = new Audio('../../assets/audio/alarm.mp3');
     alarmSound.play();
 }
 
