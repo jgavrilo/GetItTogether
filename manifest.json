@@ -3,7 +3,6 @@
   "name": "My Chrome Tool Set",
   "version": "1.0",
   "description": "A tool set for chrome",
-  "permissions": ["alarms", "activeTab", "storage"],
   "action": {
     "default_popup": "popup.html",
     "default_icon": {
