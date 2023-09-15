@@ -97,3 +97,14 @@ input[type="text"] {
     box-sizing: border-box;  /* Ensures padding and border are included in the width */
     margin-bottom: 10px;
 }
+
+body {
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+  }
+  
+  button {
+    background-color: var(--secondary-color);
+    color: var(--primary-color);
+  }
+  

@@ -1,0 +1,7 @@
+/* Variables for Two-tone Theme */
+:root {
+    --primary-color: #1a1a1a; /* Dark tone for background */
+    --secondary-color: #ffffff; /* Light tone for text */
+    --button-color: #3498db; /* Different color for button */
+    --button-text-color: #000000; /* Black color for button text */
+  }
