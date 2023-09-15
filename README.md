@@ -33,10 +33,6 @@ You can also install this extension directly from the [Chrome Web Store](https:/
 - Click on the extension icon and then click on "Open To-Do List" to launch the to-do list.
 - Add new tasks and mark them as done as you complete them.
 
-## Screenshots
-
-(Add screenshots here)
-
 ## Contributing
 
 Feel free to open issues and pull requests!
