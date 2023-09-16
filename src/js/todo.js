@@ -12,11 +12,26 @@ document.getElementById('addTodo').addEventListener('click', function() {
         span.className = 'todo-text';
         span.textContent = ' ' + newTodo;
         li.appendChild(span);
+
+        // Add click event to the span
+        span.addEventListener('click', function() {
+            checkbox.checked = !checkbox.checked;
+            span.style.textDecoration = checkbox.checked ? 'line-through' : 'none';
+            saveTodoList();
+        });
         
         document.getElementById('todoList').appendChild(li);
         document.getElementById('newTodo').value = '';
 
         saveTodoList();
+    }
+});
+
+// New event listener for the Enter key
+document.getElementById('newTodo').addEventListener('keydown', function(event) {
+    if (event.keyCode === 13) {  // 13 is the key code for Enter
+        event.preventDefault();  // Prevent the default action (form submission, etc.)
+        document.getElementById('addTodo').click();  // Trigger the click event on the Add button
     }
 });
 
@@ -49,9 +64,16 @@ function loadTodoList() {
         
         const span = document.createElement('span');
         span.className = 'todo-text';
-        span.textContent = ' ' + todo.text;
+        span.textContent = todo.text;
         span.style.textDecoration = todo.isChecked ? 'line-through' : 'none';
         li.appendChild(span);
+
+        // Add click event to the span
+        span.addEventListener('click', function() {
+            checkbox.checked = !checkbox.checked;
+            span.style.textDecoration = checkbox.checked ? 'line-through' : 'none';
+            saveTodoList();
+        });
         
         todoList.appendChild(li);
     });
