@@ -3,23 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <title>Settings</title>
-    <link rel="stylesheet" type="text/css" href="../css/popup.css">
+    <link rel="stylesheet" type="text/css" href="../css/settings.css">
     <link rel="stylesheet" type="text/css" href="../css/theme.css">
-    <script src="../js/settings.js" defer></script> 
     <script src="../js/theme.js" defer></script>
+    <script src="../js/settings.js" defer></script>
 </head>
 <body>
     <h1>Settings</h1>
-    <form id="settingsForm">
-        <label for="primaryColor">Primary Color:</label>
-        <input type="color" id="primaryColor" name="primaryColor">
-        <br>
+    <div class="tab">
+        <button class="tablinks active" id="colorsTab">Colors</button>
+        <button class="tablinks" id="syncTab">Sync</button>
+    </div>
 
-        <label for="secondaryColor">Secondary Color:</label>
-        <input type="color" id="secondaryColor" name="secondaryColor">
-        <br>
 
-        <button type="submit">Save</button>
-    </form>
+    <div id="Colors" class="tabcontent" style="display: block;">
+        <form id="settingsForm">
+            <label for="primaryColor">Primary Color:</label>
+            <input type="color" id="primaryColor" name="primaryColor">
+            <br>
+
+            <label for="secondaryColor">Secondary Color:</label>
+            <input type="color" id="secondaryColor" name="secondaryColor">
+            <br>
+
+            <label for="buttonColor">Button Color:</label>
+            <input type="color" id="buttonColor" name="buttonColor">
+            <br>
+
+            <label for="buttonTextColor">Button Text Color:</label>
+            <input type="color" id="buttonTextColor" name="buttonTextColor">
+            <br>
+
+            <button type="submit">Save</button>
+        </form>
+    </div>
+
+    <div id="Sync" class="tabcontent">
+        <h2>Sync Settings</h2>
+        <button id="syncButton">Sync Now</button>
+    </div>
+    
 </body>
 </html>
