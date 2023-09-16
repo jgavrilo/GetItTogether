@@ -5,3 +5,28 @@
     --button-color: #3498db; /* Different color for button */
     --button-text-color: #000000; /* Black color for button text */
   }
+
+  button {
+    /* Text */
+    font-size: 16px;
+    text-align: center;
+    text-decoration: none;
+    color: var(--button-text-color);
+  
+    /* Layout */
+    display: inline-block;
+    padding: 10px 20px;
+    margin: 10px 2px;
+  
+    /* Appearance */
+    background-color: var(--button-color);
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+    /* Button Hover State */
+    button:hover {
+      background-color: #2980b9;
+    }
