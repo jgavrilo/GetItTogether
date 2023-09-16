@@ -18,5 +18,8 @@ document.addEventListener('DOMContentLoaded', function() {
         // Save selected colors to local storage
         localStorage.setItem('primaryColor', selectedPrimaryColor);
         localStorage.setItem('secondaryColor', selectedSecondaryColor);
+
+        // Update colors immediately
+        updateColors();
     });
 });
