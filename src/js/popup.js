@@ -79,3 +79,23 @@ function openTodo() {
         }
     }
 }
+
+const settingsButtonId = 'openSettings';
+const settingsFile = '../html/settings.html'; // You'll create this file later
+const settingsWindowDimensions = 'width=400,height=300'; // You can adjust these dimensions
+let settingsWindow = null;
+
+document.getElementById(settingsButtonId).addEventListener('click', function() {
+    // Check if settingsWindow holds a value and the window isn't closed, then focus on it
+    if (settingsWindow) {
+        settingsWindow.focus();
+    } else {
+        // Open a new settings window
+        settingsWindow = window.open(settingsFile, 'Settings', settingsWindowDimensions);
+        
+        // Attach an event listener to nullify settingsWindow when the window is closed
+        settingsWindow.onbeforeunload = function() {
+            settingsWindow = null;
+        }
+    }
+});
