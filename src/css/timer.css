@@ -1,65 +1,88 @@
+/* Body Styles */
+body {
+  /* Layout */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  margin: 0;
 
-  /* Body Styles */
-  body {
-    /* Font and Text */
-    font-family: 'Arial', sans-serif;
-    color: var(--primary-color);
-  
-    /* Layout */
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 10px;
-    margin: 0;
-  
-    /* Background */
-    background-color: var(--secondary-color);
-    height: 100vh;
-  }
-  
-  /* Section Styles */
-  #inputSection, #countdown {
-    /* Appearance */
-    background-color: var(--secondary-color);
-    border-radius: 10px;
-    box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.2);
-    color: var(--primary-color);
+  /* Background */
+  height: 100vh;
+}
 
-    /* Layout */
-    width: 80%;
-    max-width: 400px;
-    padding: 20px;
-    margin-bottom: 20px;
-  }
-  
-  /* Div Styles within Sections */
-  #inputSection div, #countdown div {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin: 10px 0;
-  }
-  
-  /* Label Styles */
-  label {
-    flex: 2;
-    font-weight: 500;
-  }
-  
-  /* Input Styles */
-  input[type="number"] {
-    flex: 1;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    font-size: 14px;
-    width: 100%;
-  }
-  
-  /* Heading Styles */
-  h2 {
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  
+/* Section Styles */
+#inputSection, #countdown, #buttonContainer {
+  /* Layout */
+  width: 80%;
+  max-width: 400px;
+  padding: 20px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center items horizontally */
+}
+
+/* Div Styles within Sections */
+#inputSection div, #countdown div {
+  color: var(--text-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 10px 0;
+}
+
+
+/* Center and space out other buttons */
+#countdown {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly; /* Space out the buttons */
+}
+
+/* Button Container in Countdown Section */
+#buttonContainer {
+  flex-direction: row; 
+}
+
+/* Label Styles */
+label {
+  flex: 2;
+  font-weight: 500;
+}
+
+/* Input Styles */
+input[type="number"] {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 14px;
+  width: 100%;
+}
+
+/* Heading Styles */
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Button Styles */
+button {
+  width: 60px;  /* Fixed width */
+  height: 60px;  /* Fixed height */
+  border-radius: 50%;  /* Make it circular */
+  font-size: 36px;  /* Increase font size */
+  display: flex;  /* Use flexbox */
+  justify-content: center;  /* Center content horizontally */
+  align-items: center;
+  margin: auto;  /* Center content vertically */
+}
+
+/* Timer Font Styles */
+#timer {
+  font-size: 48px;  /* Increase font size */
+  font-family: 'Courier New', Courier, monospace;  /* Set to a monospace font */
+}

@@ -61,15 +61,15 @@ document.getElementById('backToPalettes').addEventListener('click', toggleView);
 
 // Define preset palettes
 const palettes = {
-    palette1: { primary: '#FF0000', secondary: '#00FF00', button: '#0000FF', buttonText: '#FFFFFF' },
-    palette2: { primary: '#F0F0F0', secondary: '#0F0F0F', button: '#FF00FF', buttonText: '#00FFFF' },
-    palette3: { primary: '#123456', secondary: '#654321', button: '#789ABC', buttonText: '#CBA987' },
+    palette1: { primary: '#000000', secondary: '#00FF00' },
+    palette2: { primary: '#FFFFFF', secondary: '#0F0F0F' },
+    palette3: { primary: '#000000', secondary: '#654321' },
 };
 
 // Dynamically set the colors of each palette button
 Object.keys(palettes).forEach(id => {
     const paletteButton = document.getElementById(id);
-    ['primary', 'secondary', 'button', 'buttonText'].forEach((colorType, index) => {
+    ['primary', 'secondary'].forEach((colorType, index) => {
         const colorPart = document.createElement('div');
         colorPart.className = 'color-part';
         colorPart.style.backgroundColor = palettes[id][colorType];
@@ -89,14 +89,10 @@ paletteButtons.forEach(button => {
             const selectedPalette = palettes[id];
             document.getElementById('primaryColor').value = selectedPalette.primary;
             document.getElementById('secondaryColor').value = selectedPalette.secondary;
-            document.getElementById('buttonColor').value = selectedPalette.button;
-            document.getElementById('buttonTextColor').value = selectedPalette.buttonText;
-
+       
             // Save to local storage and update colors
             localStorage.setItem('primaryColor', selectedPalette.primary);
             localStorage.setItem('secondaryColor', selectedPalette.secondary);
-            localStorage.setItem('buttonColor', selectedPalette.button);
-            localStorage.setItem('buttonTextColor', selectedPalette.buttonText);
             updateColors();
         }
     });

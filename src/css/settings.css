@@ -1,3 +1,16 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: var(--secondary-color);
+    color: var(--primary-color);
+    height: 100vh;
+    margin: 0;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
 /* Tab styles */
 .tab {
     overflow: hidden;
@@ -14,7 +27,7 @@
     padding: 14px 16px;
     transition: 0.3s;
     font-size: 17px;
-    color: var(--secondary-color);
+    color: var(--button-color);
 }
 
 .tab button:hover {

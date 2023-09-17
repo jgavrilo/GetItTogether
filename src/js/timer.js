@@ -1,7 +1,6 @@
 // Get references to elements
 const startButton = document.getElementById("startTimer");
 const startBreakButton = document.getElementById("startBreak");
-const endBreakButton = document.getElementById("endBreak");
 
 const timerContent = document.getElementById("countdown");
 const inputContent = document.getElementById("inputSection");
@@ -40,7 +39,8 @@ function stopAlarm() {
 }
 
 // Timer logic
-function startTimer(duration, callback) {
+// Timer logic
+function startTimer(duration, callback, isBreak = false) {
     clearInterval(timerInterval); // Clear any existing timer
 
     let totalTime = duration * 60; // Convert minutes to seconds
@@ -57,7 +57,12 @@ function startTimer(duration, callback) {
         } else {
             clearInterval(timerInterval);
             playAlarm();
-            document.getElementById("pauseTimer").style.display = "none"; 
+            if (isBreak) {
+                document.getElementById("stopTimer").style.display = "block";
+                document.getElementById("startBreak").style.display = "none";
+                document.getElementById("pauseTimer").style.display = "none";
+                document.getElementById("resumeTimer").style.display = "none";
+            }
             if (callback) callback();
         }
     };
@@ -65,6 +70,7 @@ function startTimer(duration, callback) {
     updateTimerDisplay();
     timerInterval = setInterval(updateTimerDisplay, 1000);
 }
+
 
 
 // Event listener for start button
@@ -100,20 +106,9 @@ startButton.addEventListener("click", function(event) {
             stopAlarm(); // Stop the alarm sound if it's playing
             startTimer(breakTime, function() {
                 startBreakButton.style.display = "none";
-                endBreakButton.style.display = "block";
-                endBreakButton.addEventListener("click", function(event) {
-                    // Prevent clicks on the end break button from closing the popup
-                    event.stopPropagation();
-
-                    inputSection.style.display = "block";
-                    endBreakButton.style.display = "none";
-                    countdownSection.style.display = "none";    
-                    stopAlarm(); // Stop the alarm sound if it's playing
-
-                });
-            });
+            }, true);
         });
-    });
+    }, true);
 });
 
 // Event listener for Stop button

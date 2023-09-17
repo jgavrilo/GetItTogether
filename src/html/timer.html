@@ -8,7 +8,6 @@
     <title>Timer</title>
     <script src="../js/theme.js" defer></script>
     <script src="../js/timer.js" defer></script>
-
 </head>
 <body>
     <!-- Input Section -->
@@ -21,19 +20,19 @@
             <label for="breakTime">Break Time (mins):</label>
             <input type="number" id="breakTime">
         </div>
-        <button id="startTimer">Start Timer</button>
+        <button id="startTimer">▶</button>
     </div>
 
     <!-- Countdown Section -->
     <div id="countdown" style="display: none;">
-        <h2>Time left: <span id="timer"></span></h2>
-        <button id="startBreak" style="display: none;">Start Break</button>
-        <button id="endBreak" style="display: none;">End Break</button>
-        <button id="stopTimer" style="display: none;">Stop</button>
-        <button id="pauseTimer" style="display: none;">Pause</button>
-        <button id="resumeTimer" style="display: none;">Resume</button>
+        <h2><span id="timer"></span></h2>
+        <div id="buttonContainer">
+            <button id="startBreak" style="display: none;">☕</button>
+            <button id="stopTimer" style="display: none;">⏹</button>
+            <button id="pauseTimer" style="display: none;">⏸</button>
+            <button id="resumeTimer" style="display: none;">▶</button>
+        </div>
     </div>
-
 
 </body>
 </html>
