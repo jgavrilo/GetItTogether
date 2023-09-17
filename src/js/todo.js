@@ -10,7 +10,7 @@ document.getElementById('addTodo').addEventListener('click', function() {
         
         const span = document.createElement('span');
         span.className = 'todo-text';
-        span.textContent = ' ' + newTodo;
+        span.textContent = newTodo;
         li.appendChild(span);
 
         // Add click event to the span
