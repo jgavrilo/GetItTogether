@@ -15,31 +15,39 @@
     </div>
 
     <div id="Colors" class="tabcontent" style="display: block;">
-        <form id="settingsForm">
-            <label for="primaryColor">Primary Color:</label>
-            <input type="color" id="primaryColor" name="primaryColor">
-            <br>
-
-            <label for="secondaryColor">Secondary Color:</label>
-            <input type="color" id="secondaryColor" name="secondaryColor">
-            <br>
-
-            <label for="buttonColor">Button Color:</label>
-            <input type="color" id="buttonColor" name="buttonColor">
-            <br>
-
-            <label for="buttonTextColor">Button Text Color:</label>
-            <input type="color" id="buttonTextColor" name="buttonTextColor">
-            <br>
-
-            <button type="submit">Save</button>
-        </form>
+        <div id="presetPalettes">
+            <button class="palette-button" id="palette1">Palette 1</button>
+            <button class="palette-button" id="palette2">Palette 2</button>
+            <button class="palette-button" id="palette3">Palette 3</button>
+            <button class="palette-button" id="palette4">Custom</button>
+        </div>
+        <div id="customColors" style="display: none;">
+            <button id="backToPalettes">Back</button>
+            <form id="settingsForm">
+                <label for="primaryColor">Primary Color:</label>
+                <input type="color" id="primaryColor" name="primaryColor">
+                <br>
+    
+                <label for="secondaryColor">Secondary Color:</label>
+                <input type="color" id="secondaryColor" name="secondaryColor">
+                <br>
+    
+                <label for="buttonColor">Button Color:</label>
+                <input type="color" id="buttonColor" name="buttonColor">
+                <br>
+    
+                <label for="buttonTextColor">Button Text Color:</label>
+                <input type="color" id="buttonTextColor" name="buttonTextColor">
+                <br>
+    
+                <button type="submit">Save</button>
+            </form>
+        </div>
     </div>
 
     <div id="Sync" class="tabcontent">
         <h2>Sync Settings</h2>
         <button id="loginButton">Login with Google</button>
     </div>
-    
 </body>
 </html>

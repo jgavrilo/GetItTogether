@@ -39,6 +39,58 @@ document.addEventListener('DOMContentLoaded', function() {
         // Update colors immediately
         updateColors();
     });
+
+// Toggle between custom and preset palettes
+function toggleView() {
+    const presetPalettes = document.getElementById('presetPalettes');
+    const customColors = document.getElementById('customColors');
+    if (presetPalettes.style.display === 'none' || presetPalettes.style.display === '') {
+        presetPalettes.style.display = 'block';
+        customColors.style.display = 'none';
+    } else {
+        presetPalettes.style.display = 'none';
+        customColors.style.display = 'block';
+    }
+}
+
+// Event listener for the "Custom" button
+document.getElementById('palette4').addEventListener('click', toggleView);
+
+// Event listener for the "Back" button
+document.getElementById('backToPalettes').addEventListener('click', toggleView);
+
+// Define preset palettes
+const palettes = {
+    palette1: { primary: '#FF0000', secondary: '#00FF00', button: '#0000FF', buttonText: '#FFFFFF' },
+    palette2: { primary: '#F0F0F0', secondary: '#0F0F0F', button: '#FF00FF', buttonText: '#00FFFF' },
+    palette3: { primary: '#123456', secondary: '#654321', button: '#789ABC', buttonText: '#CBA987' },
+};
+
+// Add event listeners to palette buttons
+const paletteButtons = document.querySelectorAll('.palette-button');
+paletteButtons.forEach(button => {
+    button.addEventListener('click', function() {
+        const id = this.id;
+        if (id === 'palette4') {
+            // Handle custom palette
+            // Here you can add the custom palette to the preset options
+        } else {
+            // Set colors based on the selected palette
+            const selectedPalette = palettes[id];
+            document.getElementById('primaryColor').value = selectedPalette.primary;
+            document.getElementById('secondaryColor').value = selectedPalette.secondary;
+            document.getElementById('buttonColor').value = selectedPalette.button;
+            document.getElementById('buttonTextColor').value = selectedPalette.buttonText;
+
+            // Save to local storage and update colors
+            localStorage.setItem('primaryColor', selectedPalette.primary);
+            localStorage.setItem('secondaryColor', selectedPalette.secondary);
+            localStorage.setItem('buttonColor', selectedPalette.button);
+            localStorage.setItem('buttonTextColor', selectedPalette.buttonText);
+            updateColors();
+        }
+    });
+});
 });
 
 //Tabs

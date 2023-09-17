@@ -17,12 +17,32 @@ body {
   
     /* Background */
     background-color: var(--secondary-color);
-    height: 100vh;
+
+    /* Layout */
+    display: grid; /* Use grid layout */
+    grid-template-columns: repeat(2, 1fr); /* Create 2 equal columns */
+    gap: 5px; /* Gap between grid items */
+    justify-items: center; /* Center items horizontally */
+    align-items: center; /* Center items vertically */
   }
+
+  button {
+    /* Text */
+    font-size: 16px;
+    text-align: center;
+    text-decoration: none;
+    color: var(--button-text-color);
   
-  /* Icon Styles */
-  .icon {
-    margin-right: 10px;
-    height: 20px;
-    width: 20px;
-  }
+    /* Layout */
+    width: 140px; /* Fixed width */
+    height: 100px; /* Fixed height */
+    padding: 10px; /* Add some padding */
+    box-sizing: border-box; /* Include padding and border in element's total width and height */
+  
+    /* Appearance */
+    background-color: var(--button-color);
+    border: 2px solid var(--button-text-color); /* Add border */
+    border-radius: 12px; /* Curved edges */
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
