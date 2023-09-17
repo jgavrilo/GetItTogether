@@ -66,6 +66,17 @@ const palettes = {
     palette3: { primary: '#123456', secondary: '#654321', button: '#789ABC', buttonText: '#CBA987' },
 };
 
+// Dynamically set the colors of each palette button
+Object.keys(palettes).forEach(id => {
+    const paletteButton = document.getElementById(id);
+    ['primary', 'secondary', 'button', 'buttonText'].forEach((colorType, index) => {
+        const colorPart = document.createElement('div');
+        colorPart.className = 'color-part';
+        colorPart.style.backgroundColor = palettes[id][colorType];
+        paletteButton.appendChild(colorPart);
+    });
+});
+
 // Add event listeners to palette buttons
 const paletteButtons = document.querySelectorAll('.palette-button');
 paletteButtons.forEach(button => {
@@ -73,7 +84,6 @@ paletteButtons.forEach(button => {
         const id = this.id;
         if (id === 'palette4') {
             // Handle custom palette
-            // Here you can add the custom palette to the preset options
         } else {
             // Set colors based on the selected palette
             const selectedPalette = palettes[id];
@@ -91,6 +101,8 @@ paletteButtons.forEach(button => {
         }
     });
 });
+
+
 });
 
 //Tabs
@@ -108,22 +120,40 @@ function openTab(evt, tabName) {
     evt.currentTarget.className += " active";
 }
 
-//login to google
-chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-    if (request.message === 'login') {
-      chrome.identity.getAuthToken({ 'interactive': true }, function(token) {
-        if (chrome.runtime.lastError) {
-          console.log(chrome.runtime.lastError);
-          return;
-        }
-        // Use the token to make API requests.
-      });
+let isLoggedIn = false;  // Variable to keep track of login state
+
+// Wait for the DOM to be fully loaded
+document.addEventListener('DOMContentLoaded', function() {
+  const loginButton = document.getElementById('loginButton');
+
+  // Initialize button text based on login state
+  loginButton.textContent = isLoggedIn ? 'Log Out' : 'Login with Google';
+
+  // Attach click event listener to the login button
+  loginButton.addEventListener('click', function() {
+    if (!isLoggedIn) {
+      // If not logged in, attempt to log in
+      chrome.runtime.sendMessage({ message: 'login' });
+    } else {
+      // If already logged in, log out (you'll need to implement logout logic)
+      // For example, you could revoke the token
+      isLoggedIn = false;
+      loginButton.textContent = 'Login with Google';
     }
   });
-  
-  
-  document.getElementById('loginButton').addEventListener('click', function() {
-    chrome.runtime.sendMessage({ message: 'login' });
-  });
-  
-  
+});
+
+// Listen for login message from content script or popup
+chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+  if (request.message === 'login') {
+    chrome.identity.getAuthToken({ 'interactive': true }, function(token) {
+      if (chrome.runtime.lastError) {
+        console.log(chrome.runtime.lastError);
+        return;
+      }
+      // Use the token to make API requests.
+      isLoggedIn = true;  // Update login state
+      document.getElementById('loginButton').textContent = 'Log Out';  // Update button text
+    });
+  }
+});
