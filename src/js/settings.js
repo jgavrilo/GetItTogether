@@ -123,6 +123,7 @@ function openTab(evt, tabName) {
     evt.currentTarget.className += " active";
 }
 
+
 let isLoggedIn = false;  // Variable to keep track of login state
 
 // Wait for the DOM to be fully loaded
