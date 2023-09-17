@@ -8,6 +8,7 @@ const inputContent = document.getElementById("inputSection");
 
 let timerInterval; // Declare the timerInterval variable
 let alarmSound; // Declare the alarm sound variable at a broader scope
+let isPaused = false; // Declare a variable to track the pause state
 
 // After the break timer is over
 // Show input content and populate input fields with previous input values
@@ -48,7 +49,9 @@ function startTimer(duration, callback) {
             const minutes = Math.floor(totalTime / 60);
             const seconds = totalTime % 60;
             displayTimer.textContent = `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
-            totalTime--;
+            if (!isPaused) {
+                totalTime--;
+            }
 
             if (totalTime < 0) {
                 clearInterval(timerInterval);
@@ -58,16 +61,17 @@ function startTimer(duration, callback) {
         } else {
             clearInterval(timerInterval); // Clear the interval if totalTime is negative
         }
+
+        if (totalTime < 0) {
+            clearInterval(timerInterval);
+            playAlarm(); // Play the alarm sound
+            document.getElementById("pauseTimer").style.display = "none"; // Hide the Pause button
+            if (callback) callback(); // Call the passed callback function when timer runs out
+        }
     };
 
     updateTimerDisplay();
     timerInterval = setInterval(updateTimerDisplay, 1000); // Initialize timerInterval here
-
-    // At the end of the timer, if the callback is given:
-    if (totalTime < 0) {
-        clearInterval(timerInterval);
-        if (callback) callback();
-    }
 }
 
 // Event listener for start button
@@ -83,6 +87,9 @@ startButton.addEventListener("click", function(event) {
 
     inputSection.style.display = "none";
     countdownSection.style.display = "block";
+    document.getElementById("stopTimer").style.display = "block";
+    document.getElementById("pauseTimer").style.display = "block";
+    document.getElementById("resumeTimer").style.display = "none";
 
     startTimer(workTime, function() {
         startBreakButton.style.display = "block";
@@ -111,4 +118,26 @@ startButton.addEventListener("click", function(event) {
             });
         });
     });
+});
+
+// Event listener for Stop button
+document.getElementById("stopTimer").addEventListener("click", function() {
+    stopAlarm();
+    clearInterval(timerInterval);
+    isPaused = false; // Reset the pause state
+    showInputContent(workTime, breakTime); // Show the input section
+});
+
+// Event listener for Pause button
+document.getElementById("pauseTimer").addEventListener("click", function() {
+    isPaused = true;
+    document.getElementById("pauseTimer").style.display = "none";
+    document.getElementById("resumeTimer").style.display = "block";
+});
+
+// Event listener for Resume button
+document.getElementById("resumeTimer").addEventListener("click", function() {
+    isPaused = false;
+    document.getElementById("pauseTimer").style.display = "block";
+    document.getElementById("resumeTimer").style.display = "none";
 });
