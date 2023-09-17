@@ -41,6 +41,8 @@ function stopAlarm() {
 
 // Timer logic
 function startTimer(duration, callback) {
+    clearInterval(timerInterval); // Clear any existing timer
+
     let totalTime = duration * 60; // Convert minutes to seconds
     const displayTimer = document.getElementById("timer");
 
@@ -52,32 +54,26 @@ function startTimer(duration, callback) {
             if (!isPaused) {
                 totalTime--;
             }
-
-            if (totalTime < 0) {
-                clearInterval(timerInterval);
-                playAlarm(); // Play the alarm sound
-                if (callback) callback(); // Call the passed callback function when timer runs out
-            }
         } else {
-            clearInterval(timerInterval); // Clear the interval if totalTime is negative
-        }
-
-        if (totalTime < 0) {
             clearInterval(timerInterval);
-            playAlarm(); // Play the alarm sound
-            document.getElementById("pauseTimer").style.display = "none"; // Hide the Pause button
-            if (callback) callback(); // Call the passed callback function when timer runs out
+            playAlarm();
+            document.getElementById("pauseTimer").style.display = "none"; 
+            if (callback) callback();
         }
     };
 
     updateTimerDisplay();
-    timerInterval = setInterval(updateTimerDisplay, 1000); // Initialize timerInterval here
+    timerInterval = setInterval(updateTimerDisplay, 1000);
 }
+
 
 // Event listener for start button
 startButton.addEventListener("click", function(event) {
+    clearInterval(timerInterval); // Stop any existing timer
+
     // Prevent clicks on the start button from closing the popup
     event.stopPropagation();
+    
 
     const workTimeInput = document.getElementById("workTime");
     const inputSection = document.getElementById("inputSection");
@@ -122,6 +118,7 @@ startButton.addEventListener("click", function(event) {
 
 // Event listener for Stop button
 document.getElementById("stopTimer").addEventListener("click", function() {
+    clearInterval(timerInterval); // Stop any existing timer
     stopAlarm();
     clearInterval(timerInterval);
     isPaused = false; // Reset the pause state
@@ -130,6 +127,7 @@ document.getElementById("stopTimer").addEventListener("click", function() {
 
 // Event listener for Pause button
 document.getElementById("pauseTimer").addEventListener("click", function() {
+    clearInterval(timerInterval); // Stop any existing timer
     isPaused = true;
     document.getElementById("pauseTimer").style.display = "none";
     document.getElementById("resumeTimer").style.display = "block";
@@ -137,6 +135,7 @@ document.getElementById("pauseTimer").addEventListener("click", function() {
 
 // Event listener for Resume button
 document.getElementById("resumeTimer").addEventListener("click", function() {
+    clearInterval(timerInterval); // Stop any existing timer
     isPaused = false;
     document.getElementById("pauseTimer").style.display = "block";
     document.getElementById("resumeTimer").style.display = "none";
