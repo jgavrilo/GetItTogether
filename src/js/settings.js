@@ -1,15 +1,24 @@
+// Define preset palettes
+const palettes = {
+    palette1: { primary: '#000000', secondary: '#00FF00', third: '#0000FF', fourth: '#FF00FF' },
+    palette2: { primary: '#FFFFFF', secondary: '#0F0F0F', third: '#0000FF', fourth: '#FF00FF' },
+    palette3: { primary: '#000000', secondary: '#654321', third: '#0000FF', fourth: '#FF00FF' },
+};
+
+
 //Colors
 document.addEventListener('DOMContentLoaded', function() {
     // Load saved colors from local storage
-    const primaryColor = localStorage.getItem('primaryColor') || '#1a1a1a';
-    const secondaryColor = localStorage.getItem('secondaryColor') || '#ffffff';
-    const buttonColor = localStorage.getItem('buttonColor') || '#3498db';
-    const buttonTextColor =  localStorage.getItem('buttonTextColor') || '#000000';
+    const primaryColor = localStorage.getItem('primaryColor') || palettes.palette1.primary;
+    const secondaryColor = localStorage.getItem('secondaryColor') || palettes.palette1.secondary;
+    const thirdColor = localStorage.getItem('thirdColor') || palettes.palette1.third;
+    const fourthColor =  localStorage.getItem('fourthColor') || palettes.palette1.fourth;
+
     // Set the input fields with the saved colors
     document.getElementById('primaryColor').value = primaryColor;
     document.getElementById('secondaryColor').value = secondaryColor;
-    document.getElementById('buttonColor').value = buttonColor;
-    document.getElementById('buttonTextColor').value = buttonTextColor;
+    document.getElementById('thirdColor').value = thirdColor;
+    document.getElementById('fourthColor').value = fourthColor;
 
     // Attach event listeners to the tab buttons
     document.getElementById('colorsTab').addEventListener('click', function(event) {
@@ -27,14 +36,14 @@ document.addEventListener('DOMContentLoaded', function() {
         // Get selected colors
         const selectedPrimaryColor = document.getElementById('primaryColor').value;
         const selectedSecondaryColor = document.getElementById('secondaryColor').value;
-        const selectedButtonColor = document.getElementById('buttonColor').value;
-        const selectedButtonTextColor = document.getElementById('buttonTextColor').value;
+        const selectedThirdColor = document.getElementById('thirdColor').value;
+        const selectedFourTextColor = document.getElementById('fourthColor').value;
 
         // Save selected colors to local storage
         localStorage.setItem('primaryColor', selectedPrimaryColor);
         localStorage.setItem('secondaryColor', selectedSecondaryColor);
-        localStorage.setItem('buttonColor', selectedButtonColor);
-        localStorage.setItem('buttonTextColor', selectedButtonTextColor);
+        localStorage.setItem('thirdColor', selectedThirdColor);
+        localStorage.setItem('fourthColor', selectedFourTextColor);
 
         // Update colors immediately
         updateColors();
@@ -59,17 +68,10 @@ document.getElementById('palette4').addEventListener('click', toggleView);
 // Event listener for the "Back" button
 document.getElementById('backToPalettes').addEventListener('click', toggleView);
 
-// Define preset palettes
-const palettes = {
-    palette1: { primary: '#000000', secondary: '#00FF00' },
-    palette2: { primary: '#FFFFFF', secondary: '#0F0F0F' },
-    palette3: { primary: '#000000', secondary: '#654321' },
-};
-
 // Dynamically set the colors of each palette button
 Object.keys(palettes).forEach(id => {
     const paletteButton = document.getElementById(id);
-    ['primary', 'secondary'].forEach((colorType, index) => {
+    ['primary', 'secondary', 'third', 'fourth'].forEach((colorType, index) => {
         const colorPart = document.createElement('div');
         colorPart.className = 'color-part';
         colorPart.style.backgroundColor = palettes[id][colorType];
@@ -89,10 +91,15 @@ paletteButtons.forEach(button => {
             const selectedPalette = palettes[id];
             document.getElementById('primaryColor').value = selectedPalette.primary;
             document.getElementById('secondaryColor').value = selectedPalette.secondary;
-       
+            document.getElementById('thirdColor').value = selectedPalette.third;
+            document.getElementById('fourthColor').value = selectedPalette.fourth;
+            
             // Save to local storage and update colors
             localStorage.setItem('primaryColor', selectedPalette.primary);
             localStorage.setItem('secondaryColor', selectedPalette.secondary);
+            localStorage.setItem('thirdColor', selectedPalette.third);
+            localStorage.setItem('fourthColor', selectedPalette.fourth);
+
             updateColors();
         }
     });
