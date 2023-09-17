@@ -23,6 +23,7 @@ document.getElementById('addTodo').addEventListener('click', function() {
         document.getElementById('todoList').appendChild(li);
         document.getElementById('newTodo').value = '';
 
+        updateClearButtonVisibility();
         saveTodoList();
     }
 });
@@ -48,6 +49,8 @@ function saveTodoList() {
 
 document.addEventListener('DOMContentLoaded', function() {
     loadTodoList();
+    updateClearButtonVisibility();
+
 });
 
 function loadTodoList() {
@@ -83,6 +86,7 @@ document.getElementById('todoList').addEventListener('click', function(e) {
     if (e.target && e.target.className === 'todo-checkbox') {
         const textElement = e.target.nextSibling;
         textElement.style.textDecoration = e.target.checked ? 'line-through' : 'none';
+        updateClearButtonVisibility();
         saveTodoList();
     }
 });
@@ -96,5 +100,16 @@ document.getElementById('clearCompleted').addEventListener('click', function() {
             item.remove();
         }
     });
+    updateClearButtonVisibility();
     saveTodoList();
 });
+
+function updateClearButtonVisibility() {
+    const todoList = document.getElementById('todoList');
+    const clearCompletedButton = document.getElementById('clearCompleted');
+    if (todoList.children.length === 0) {
+        clearCompletedButton.style.display = 'none';
+    } else {
+        clearCompletedButton.style.display = 'block';
+    }
+}

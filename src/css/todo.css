@@ -1,5 +1,6 @@
 body {
     height: 100vh;
+    
     margin: 0;
     padding: 10px;
     display: flex;
@@ -11,12 +12,12 @@ body {
 button {
     padding: 10px;
     border-radius: 12px;
-  }
-
+}
   
 #todoList, #inputSection {
     border-radius: 10px;
     padding: 20px;
+    width: 350px;
     max-width: 400px;
     font-size: 18px;
 }
