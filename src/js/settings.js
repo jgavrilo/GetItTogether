@@ -1,3 +1,4 @@
+//Colors
 document.addEventListener('DOMContentLoaded', function() {
     // Load saved colors from local storage
     const primaryColor = localStorage.getItem('primaryColor') || '#1a1a1a';
@@ -40,6 +41,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
+//Tabs
 function openTab(evt, tabName) {
     var i, tabcontent, tablinks;
     tabcontent = document.getElementsByClassName("tabcontent");
@@ -53,3 +55,23 @@ function openTab(evt, tabName) {
     document.getElementById(tabName).style.display = "block";
     evt.currentTarget.className += " active";
 }
+
+//login to google
+chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+    if (request.message === 'login') {
+      chrome.identity.getAuthToken({ 'interactive': true }, function(token) {
+        if (chrome.runtime.lastError) {
+          console.log(chrome.runtime.lastError);
+          return;
+        }
+        // Use the token to make API requests.
+      });
+    }
+  });
+  
+  
+  document.getElementById('loginButton').addEventListener('click', function() {
+    chrome.runtime.sendMessage({ message: 'login' });
+  });
+  
+  
