@@ -2,12 +2,13 @@
 
 ## Description
 
-This Chrome extension provides a set of tools to enhance your productivity. It includes a timer and a to-do list, accessible right from your browser.
+This Chrome extension provides a set of tools to enhance your productivity. It includes a timer, to-do list, and theme settings, accessible right from your browser.
 
 ## Features
 
 - **Timer**: A simple timer that helps you manage your work and break times.
 - **To-Do List**: A basic to-do list to keep track of your tasks.
+- **Settings**: A settings page with theme selection.
 
 ## Installation
 
@@ -26,12 +27,18 @@ You can also install this extension directly from the [Chrome Web Store](https:/
 
 - Click on the extension icon and then click on "Open Timer" to launch the timer.
 - Set your work time and click "Start" to begin the timer.
+- While the timer is running you can pause or stop it.
 - Once the work timer ends, you can start a break timer.
 
 ### To-Do List
 
 - Click on the extension icon and then click on "Open To-Do List" to launch the to-do list.
 - Add new tasks and mark them as done as you complete them.
+
+## Settings
+
+- Click on the extension icon and then click on "Setting" to launch the settings page.
+- Currently the settings only contains a theme picker with custom color selection.
 
 ## Contributing
 
