@@ -1,7 +1,7 @@
 // Define preset palettes
 const palettes = {
-    palette1: { primary: '#000000', secondary: '#00FF00', third: '#00FF00', fourth: '#000000' },
-    palette2: { primary: '#FFFFFF', secondary: '#0F0F0F', third: '#0F0F0F', fourth: '#FFFFFF' },
+    palette1: { primary: '#FFFFFF', secondary: '#0F0F0F', third: '#0F0F0F', fourth: '#FFFFFF' },
+    palette2: { primary: '#0F0F0F', secondary: '#FFFFFF', third: '#FFFFFF', fourth: '#0F0F0F' },
     palette3: { primary: '#000000', secondary: '#654321', third: '#654321', fourth: '#000000' },
 };
 

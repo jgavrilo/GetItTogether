@@ -1,13 +1,13 @@
 /* Variables for Two-tone Theme */
 :root {
-  --primary-color: #000000;
-  --secondary-color: #00FF00;
-  --third-color: #0000FF;
-  --forth-color: #FF00FF;
+  --primary-color: #000000;       /* Background Color */
+  --secondary-color: #00FF00;     /* Text Color */
+  --third-color: #0000FF;         /* Accent Color 1 */
+  --fourth-color: #FF00FF;         /* Accent Color 2 */
   --text-color: var(--secondary-color);
-  --button-color: var(--secondary-color);
+  --button-color: var(--third-color);
   --button-text-color: var(--primary-color);
-  --button-border-color: var(--primary-color);
+  --button-border-color: var(--fourth-color);
 }
 
 /* Body Styles */
