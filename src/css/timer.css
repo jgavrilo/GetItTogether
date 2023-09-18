@@ -1,26 +1,22 @@
 /* Body Styles */
 body {
-  /* Layout */
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   margin: 0;
-
-  /* Background */
   height: 100vh;
 }
 
 /* Section Styles */
 #inputSection, #countdown, #buttonContainer {
-  /* Layout */
   width: 80%;
   max-width: 400px;
   padding: 20px;
   margin-bottom: 20px;
   display: flex;
   flex-direction: column;
-  align-items: center; /* Center items horizontally */
+  align-items: center;
 }
 
 /* Div Styles within Sections */
@@ -32,18 +28,17 @@ body {
   margin: 10px 0;
 }
 
-
-/* Center and space out other buttons */
+/* Countdown Section */
 #countdown {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-evenly; /* Space out the buttons */
+  justify-content: space-evenly;
 }
 
-/* Button Container in Countdown Section */
+/* Button Container */
 #buttonContainer {
-  flex-direction: row; 
+  flex-direction: row;
 }
 
 /* Label Styles */
@@ -70,18 +65,18 @@ h2 {
 
 /* Button Styles */
 button {
-  width: 60px;  /* Fixed width */
-  height: 60px;  /* Fixed height */
-  border-radius: 50%;  /* Make it circular */
-  font-size: 36px;  /* Increase font size */
-  display: flex;  /* Use flexbox */
-  justify-content: center;  /* Center content horizontally */
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  font-size: 36px;
+  display: flex;
+  justify-content: center;
   align-items: center;
-  margin: auto;  /* Center content vertically */
+  margin: auto;
 }
 
 /* Timer Font Styles */
 #timer {
-  font-size: 48px;  /* Increase font size */
-  font-family: 'Courier New', Courier, monospace;  /* Set to a monospace font */
+  font-size: 48px;
+  font-family: 'Courier New', Courier, monospace;
 }

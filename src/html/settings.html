@@ -13,11 +13,13 @@
 </head>
 <body>
     <div class="tab-container">
+        <!-- Tab Section -->
         <div class="tab">
             <button class="tablinks active" id="colorsTab">Colors</button>
             <button class="tablinks" id="syncTab">Sync</button>
         </div>
-
+        
+        <!-- Colors Section -->
         <div id="Colors" class="tabcontent" style="display: block;">
             <div id="presetPalettes" style="display: block;">
                 <div id="paletteGrid">
@@ -27,40 +29,33 @@
                     <button class="palette-button" id="palette4"></button>
                 </div>
             </div>
-
             <div id="customColors" style="display: none;">
                 <form id="settingsForm">
                     <label for="primaryColor">Primary Color:</label>
                     <input type="color" id="primaryColor" name="primaryColor">
                     <br>
-        
                     <label for="secondaryColor">Secondary Color:</label>
                     <input type="color" id="secondaryColor" name="secondaryColor">
                     <br>
-        
                     <label for="thirdColor">Third Color:</label>
                     <input type="color" id="thirdColor" name="thirdColor">
                     <br>
-        
                     <label for="fourthColor">Fourth Color:</label>
                     <input type="color" id="fourthColor" name="fourthColor">
                     <br>
-        
                     <div id="buttonWrapper">
                         <button id="backToPalettes">Back</button>
-                        <button type="submit">Save</button>
+                        <button id="submit" type="submit">Save</button>
                     </div>
-                    
                 </form>
             </div>
         </div>
-
+        
+        <!-- Login With Google Section -->
         <div id="Sync" class="tabcontent">
             <h2>Sync Settings</h2>
             <button id="loginButton">Login with Google</button>
         </div>
-
     </div>
-
 </body>
 </html>

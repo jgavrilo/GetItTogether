@@ -1,3 +1,4 @@
+/* Body Styles */
 body {
     height: 100vh;
     margin: 0;
@@ -7,11 +8,13 @@ body {
     align-items: center;
 }
 
+/* Buttons */
 button {
     padding: 10px;
     border-radius: 12px;
 }
-  
+
+/* Todo List and Input Section */
 #todoList, #inputSection {
     border-radius: 10px;
     padding: 20px;
@@ -25,35 +28,46 @@ ul#todoList {
     padding-left: 0;
 }
 
+/* Input Section */
+#inputSection {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
 #inputSection div {
     display: flex;
-    align-items: stretch; /* Change this to stretch so they take the full height */
+    align-items: stretch;
 }
 
 button#addTodo, input#newTodo {
-    height: 100%; /* Make sure they occupy the full height of the container */
-    margin: 0;  /* Remove margin */
-    padding: 10px;  /* Adjust padding as needed */
-    box-sizing: border-box;  /* Include padding and border in height and width */
+    height: 100%;
+    margin: 0;
+    padding: 10px;
+    box-sizing: border-box;
 }
 
 input#newTodo {
-    flex-grow: 1;  /* Allow input to take up available space */
+    flex-grow: 1;
 }
 
+/* Labels and Inputs */
 label {
     flex: 2;
     font-weight: 500;
 }
 
 input[type="text"] {
-    flex: 1;
+    padding: 10px;
     border: 1px solid #ddd;
     border-radius: 5px;
-    font-size: 18px;
-    width: 100%;
+    font-size: 14px;
+    width: calc(100% - 20px);
+    box-sizing: border-box;
+    margin-bottom: 10px;
 }
 
+/* Additional Styles */
 h2 {
     text-align: center;
     margin-bottom: 20px;
@@ -63,26 +77,8 @@ h2 {
     margin-right: 10px;
 }
 
-#inputSection {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-}
-
 #buttonSection {
     display: flex;
     justify-content: space-between;
     width: 100%;
 }
-
-input[type="text"] {
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    font-size: 14px;
-    width: calc(100% - 20px);  /* Adjusted width */
-    box-sizing: border-box;  /* Ensures padding and border are included in the width */
-    margin-bottom: 10px;
-}
-  
- 

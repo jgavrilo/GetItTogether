@@ -1,8 +1,8 @@
 // Define preset palettes
 const palettes = {
-    palette1: { primary: '#000000', secondary: '#00FF00', third: '#0000FF', fourth: '#FF00FF' },
-    palette2: { primary: '#FFFFFF', secondary: '#0F0F0F', third: '#0000FF', fourth: '#FF00FF' },
-    palette3: { primary: '#000000', secondary: '#654321', third: '#0000FF', fourth: '#FF00FF' },
+    palette1: { primary: '#000000', secondary: '#00FF00', third: '#00FF00', fourth: '#000000' },
+    palette2: { primary: '#FFFFFF', secondary: '#0F0F0F', third: '#0F0F0F', fourth: '#FFFFFF' },
+    palette3: { primary: '#000000', secondary: '#654321', third: '#654321', fourth: '#000000' },
 };
 
 // Function to toggle between custom and preset palettes
