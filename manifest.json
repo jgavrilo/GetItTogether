@@ -3,9 +3,6 @@
   "name": "My Chrome Tool Set",
   "version": "1.2",
   "description": "A tool set for chrome",
-  "permissions": [
-    "identity"
-  ],
   "action": {
     "default_popup": "src/html/popup.html",
     "default_icon": {
@@ -13,10 +10,6 @@
       "48": "assets/images/tools-icon48.png",
       "128": "assets/images/tools-icon128.png"
     }
-  },
-  "oauth2": {
-    "client_id": "560269899876-1o6s6hrjkqs2ul9hpn48bb7tdf5kjklj.apps.googleusercontent.com",
-    "scopes": ["email", "profile"]
   },
   "icons": {
     "16": "assets/images/tools-icon16.png",

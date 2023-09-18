@@ -18,8 +18,4 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('colorsTab').addEventListener('click', function(event) {
         openTab(event, 'Colors');
     });
-
-    document.getElementById('syncTab').addEventListener('click', function(event) {
-        openTab(event, 'Sync');
-    });
 });
