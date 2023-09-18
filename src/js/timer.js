@@ -1,3 +1,8 @@
+// Global variables
+let timerInterval; 
+let alarmSound; 
+let isPaused = false;
+
 // Get references to elements
 const startButton = document.getElementById("startTimer");
 const startBreakButton = document.getElementById("startBreak");
@@ -5,32 +10,27 @@ const startBreakButton = document.getElementById("startBreak");
 const timerContent = document.getElementById("countdown");
 const inputContent = document.getElementById("inputSection");
 
-let timerInterval; // Declare the timerInterval variable
-let alarmSound; // Declare the alarm sound variable at a broader scope
-let isPaused = false; // Declare a variable to track the pause state
-
-// After the break timer is over
-// Show input content and populate input fields with previous input values
-function showInputContent(workTime, breakTime) {
-    timerContent.style.display = "none";
-    inputContent.style.display = "block";
-
-    const workTimeInput = document.getElementById("workTime");
-    const breakTimeInput = document.getElementById("breakTime");
-
-    if (workTimeInput && breakTimeInput) {
-        workTimeInput.value = workTime;
-        breakTimeInput.value = breakTime;
-    }
+// Utility function to toggle display of elements
+function toggleDisplay(elementId, displayStyle) {
+    document.getElementById(elementId).style.display = displayStyle;
 }
 
-// Play the alarm sound
+// Function to show input content after the break timer
+function showInputContent(workTime, breakTime) {
+    toggleDisplay("countdown", "none");
+    toggleDisplay("inputSection", "block");
+
+    document.getElementById("workTime").value = workTime;
+    document.getElementById("breakTime").value = breakTime;
+}
+
+// Function to play alarm sound
 function playAlarm() {
     alarmSound = new Audio('../../assets/audio/alarm.mp3');
     alarmSound.play();
 }
 
-// Stop the alarm sound
+// Function to stop alarm sound
 function stopAlarm() {
     if (alarmSound) {
         alarmSound.pause();
@@ -38,11 +38,9 @@ function stopAlarm() {
     }
 }
 
-// Timer logic
-// Timer logic
+// Main timer logic
 function startTimer(duration, callback, isBreak = false) {
     clearInterval(timerInterval); // Clear any existing timer
-
     let totalTime = duration * 60; // Convert minutes to seconds
     const displayTimer = document.getElementById("timer");
 
@@ -58,10 +56,10 @@ function startTimer(duration, callback, isBreak = false) {
             clearInterval(timerInterval);
             playAlarm();
             if (isBreak) {
-                document.getElementById("stopTimer").style.display = "block";
-                document.getElementById("startBreak").style.display = "none";
-                document.getElementById("pauseTimer").style.display = "none";
-                document.getElementById("resumeTimer").style.display = "none";
+                toggleDisplay("stopTimer", "block");
+                toggleDisplay("startBreak", "none");
+                toggleDisplay("pauseTimer", "none");
+                toggleDisplay("resumeTimer", "none");
             }
             if (callback) callback();
         }
@@ -71,67 +69,51 @@ function startTimer(duration, callback, isBreak = false) {
     timerInterval = setInterval(updateTimerDisplay, 1000);
 }
 
-
-
 // Event listener for start button
 startButton.addEventListener("click", function(event) {
-    clearInterval(timerInterval); // Stop any existing timer
+    event.stopPropagation(); 
+    const workTime = parseInt(document.getElementById("workTime").value) || 0;
 
-    // Prevent clicks on the start button from closing the popup
-    event.stopPropagation();
-    
-
-    const workTimeInput = document.getElementById("workTime");
-    const inputSection = document.getElementById("inputSection");
-    const countdownSection = document.getElementById("countdown");
-
-    const workTime = parseInt(workTimeInput.value) || 0;
-
-    inputSection.style.display = "none";
-    countdownSection.style.display = "block";
-    document.getElementById("stopTimer").style.display = "block";
-    document.getElementById("pauseTimer").style.display = "block";
-    document.getElementById("resumeTimer").style.display = "none";
+    toggleDisplay("inputSection", "none");
+    toggleDisplay("countdown", "block");
+    toggleDisplay("stopTimer", "block");
+    toggleDisplay("pauseTimer", "block");
+    toggleDisplay("resumeTimer", "none");
 
     startTimer(workTime, function() {
         startBreakButton.style.display = "block";
         startBreakButton.addEventListener("click", function(event) {
-            // Prevent clicks on the start break button from closing the popup
             event.stopPropagation();
+            const breakTime = parseInt(document.getElementById("breakTime").value) || 0;
 
-            const breakTimeInput = document.getElementById("breakTime");
-            const breakTime = parseInt(breakTimeInput.value) || 0;
-
-            startBreakButton.style.display = "none";
-            stopAlarm(); // Stop the alarm sound if it's playing
+            toggleDisplay("startBreak", "none");
+            stopAlarm(); 
             startTimer(breakTime, function() {
-                startBreakButton.style.display = "none";
+                toggleDisplay("startBreak", "none");
             }, true);
         });
     }, true);
 });
 
-// Event listener for Stop button
 document.getElementById("stopTimer").addEventListener("click", function() {
-    clearInterval(timerInterval); // Stop any existing timer
-    stopAlarm();
     clearInterval(timerInterval);
-    isPaused = false; // Reset the pause state
-    showInputContent(workTime, breakTime); // Show the input section
+    stopAlarm();
+    showInputContent(workTime, breakTime);
 });
 
-// Event listener for Pause button
 document.getElementById("pauseTimer").addEventListener("click", function() {
-    clearInterval(timerInterval); // Stop any existing timer
     isPaused = true;
-    document.getElementById("pauseTimer").style.display = "none";
-    document.getElementById("resumeTimer").style.display = "block";
+    toggleDisplay("pauseTimer", "none");
+    toggleDisplay("resumeTimer", "block");
 });
 
-// Event listener for Resume button
 document.getElementById("resumeTimer").addEventListener("click", function() {
-    clearInterval(timerInterval); // Stop any existing timer
     isPaused = false;
-    document.getElementById("pauseTimer").style.display = "block";
-    document.getElementById("resumeTimer").style.display = "none";
+    toggleDisplay("pauseTimer", "block");
+    toggleDisplay("resumeTimer", "none");
 });
+
+
+
+
+
