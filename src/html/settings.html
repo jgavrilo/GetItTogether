@@ -8,7 +8,7 @@
     <script src="../js/theme.js" defer></script>
     <script src="../js/settings.js" defer></script>
     <script src="../js/color.js" defer></script>
-    <script src="../js/login.js" defer></script>
+    <script src="../js/alarms.js" defer></script>
 
 </head>
 <body>
@@ -16,6 +16,7 @@
         <!-- Tab Section -->
         <div class="tab">
             <button class="tablinks active" id="colorsTab">Colors</button>
+            <button class="tablinks" id="alarmsTab">Alarms</button>
         </div>
         
         <!-- Colors Section -->
@@ -49,6 +50,34 @@
                 </form>
             </div>
         </div>
+
+        <div id="Alarms" class="tabcontent">
+            <form id="alarmForm">
+                <input type="radio" id="classic-alarm" name="alarm" value="classic-alarm.mp3">
+                <label for="classic-alarm">Classic</label><br>
+                
+                <input type="radio" id="retro-alarm" name="alarm" value="retro-alarm.mp3">
+                <label for="retro-alarm">Retro</label><br>
+                
+                <input type="radio" id="datascanner-alarm" name="alarm" value="datascanner-alarm.mp3">
+                <label for="datascanner-alarm">Data Scanner</label><br>
+
+                <input type="radio" id="siren-alarm" name="alarm" value="siren-alarm.mp3">
+                <label for="siren-alarm">Siren</label><br>
+
+                <input type="radio" id="winner-alarm" name="alarm" value="winner-alarm.mp3">
+                <label for="winner-alarm">Winner</label><br>
+                
+                <div id="buttonWrapper">
+                    <button id="testButton">Test</button>
+                    <button id="submit" type="submit">Save</button>
+                </div>
+
+            </form>
+        </div>
+          
+        
+
     </div>
 </body>
 </html>

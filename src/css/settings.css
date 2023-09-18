@@ -73,7 +73,7 @@ body {
     border: 1px solid #ccc;
 }
 
-button#loginButton, button#backToPalettes, button#submit {
+button#loginButton, button#backToPalettes, button#submit, button#testButton {
     padding: 10px;
     box-sizing: border-box;
     padding: 10px;

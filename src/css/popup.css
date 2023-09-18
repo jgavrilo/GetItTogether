@@ -19,3 +19,10 @@ button {
   border: 5px solid var(--button-border-color);
   border-radius: 12px;
 }
+
+/* Add this to your popup.css */
+#adBanner {
+  width: 100%;
+  height: auto;
+  /* Additional styling as needed */
+}

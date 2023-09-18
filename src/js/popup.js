@@ -59,3 +59,4 @@ const settingsWindowDimensions = 'width=400,height=300';
 handleWindowOpen(timerWindow, timerWindowName, timerButtonId, timerFile, isTimerOpen, timerWindowDimensions);
 handleWindowOpen(todoWindow, todoWindowName, todoButtonId, todoFile, isTodoOpen, todoWindowDimensions);
 handleWindowOpen(settingsWindow, settingsWindowName, settingsButtonId, settingsFile, null, settingsWindowDimensions);
+
