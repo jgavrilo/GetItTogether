@@ -99,6 +99,7 @@ startButton.addEventListener("click", function(event) {
 document.getElementById("stopTimer").addEventListener("click", function() {
     clearInterval(timerInterval);
     stopAlarm();
+    toggleDisplay("startBreak", "none");
     showInputContent(workTime, breakTime);
 });
 
