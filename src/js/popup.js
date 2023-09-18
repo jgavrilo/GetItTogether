@@ -1,62 +1,51 @@
-// Function to handle window opening logic
-function handleWindowOpen(windowObj, windowName, buttonId, file, isOpenFlag, dimensions) {
-    document.getElementById(buttonId).addEventListener('click', function() {
-        if (windowObj) {
-            windowObj.focus();
-        } else {
-            const isWindowOpen = localStorage.getItem(isOpenFlag) === 'true';
+let windowIds = {};
 
-            if (isWindowOpen) {
-                try {
-                    windowObj.focus();
-                } catch (e) {
-                    openWindow(windowObj, file, windowName, dimensions, isOpenFlag);
-                }
-            } else {
-                openWindow(windowObj, file, windowName, dimensions, isOpenFlag);
-            }
+// Function to handle window opening logic
+function handleWindowOpen(windowName, buttonId, file, dimensions) {
+    document.getElementById(buttonId).addEventListener('click', function() {
+        if (windowIds[windowName]) {
+            // If the window is already open, bring it to the front
+            chrome.windows.update(windowIds[windowName], { focused: true });
+        } else {
+            openWindow(file, windowName, dimensions);
         }
     });
 }
 
 // Function to actually open the window and set flags
-function openWindow(windowObj, file, windowName, dimensions, isOpenFlag) {
-    windowObj = window.open(file, windowName, dimensions);
-    
-    if (windowObj) {
-        localStorage.setItem(isOpenFlag, 'true');
-        
-        windowObj.onbeforeunload = function() {
-            localStorage.setItem(isOpenFlag, 'false');
-        }
-    }
+function openWindow(file, windowName, dimensions) {
+    const fullUrl = chrome.runtime.getURL(file);
+    chrome.windows.create({ url: fullUrl, type: 'popup', width: dimensions.width, height: dimensions.height }, function(window) {
+        windowIds[windowName] = window.id;
+
+        // Remove the window ID when the window is closed
+        chrome.windows.onRemoved.addListener(function(removedId) {
+            if (removedId === windowIds[windowName]) {
+                delete windowIds[windowName];
+            }
+        });
+    });
 }
 
 // Timer window variables
-let timerWindow = null;
 const timerWindowName = 'Timer';
 const timerButtonId = 'openTimer';
-const timerFile = '../html/timer.html';
-const isTimerOpen = 'isTimerWindowOpen';
-const timerWindowDimensions = 'width=400,height=300';
+const timerFile = 'src/html/timer.html';
+const timerWindowDimensions = { width: 400, height: 300 };
 
 // Todo window variables
-let todoWindow = null;
 const todoWindowName = 'TodoList';
 const todoButtonId = 'openTodo';
-const todoFile = '../html/todo.html';
-const isTodoOpen = 'isTodoWindowOpen';
-const todoWindowDimensions = 'width=400,height=500';
+const todoFile = 'src/html/todo.html';
+const todoWindowDimensions = { width: 400, height: 500 };
 
 // Settings window variables
-let settingsWindow = null;
 const settingsWindowName = "Settings";
 const settingsButtonId = 'openSettings';
-const settingsFile = '../html/settings.html';
-const settingsWindowDimensions = 'width=400,height=300';
+const settingsFile = 'src/html/settings.html';
+const settingsWindowDimensions = { width: 400, height: 300 };
 
 // Attach event listeners
-handleWindowOpen(timerWindow, timerWindowName, timerButtonId, timerFile, isTimerOpen, timerWindowDimensions);
-handleWindowOpen(todoWindow, todoWindowName, todoButtonId, todoFile, isTodoOpen, todoWindowDimensions);
-handleWindowOpen(settingsWindow, settingsWindowName, settingsButtonId, settingsFile, null, settingsWindowDimensions);
-
+handleWindowOpen(timerWindowName, timerButtonId, timerFile, timerWindowDimensions);
+handleWindowOpen(todoWindowName, todoButtonId, todoFile, todoWindowDimensions);
+handleWindowOpen(settingsWindowName, settingsButtonId, settingsFile, settingsWindowDimensions);
