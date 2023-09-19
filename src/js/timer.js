@@ -101,6 +101,7 @@ document.getElementById("stopTimer").addEventListener("click", function() {
     stopAlarm();
     toggleDisplay("startBreak", "none");
     showInputContent(workTime, breakTime);
+    isPaused = false; 
 });
 
 document.getElementById("pauseTimer").addEventListener("click", function() {
