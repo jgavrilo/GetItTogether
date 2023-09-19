@@ -3,7 +3,9 @@
   "name": "My Chrome Tool Set",
   "version": "1.2.1",
   "description": "A tool set for chrome",
-  "permissions": [],
+  "permissions": [
+    "identity"
+  ],
   "action": {
     "default_popup": "src/html/popup.html",
     "default_icon": {
