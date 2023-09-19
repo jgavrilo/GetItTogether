@@ -1,0 +1,35 @@
+name: Create Release
+
+on:
+  push:
+    branches:
+      - main  # or your default branch
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+
+    - name: Install dependencies
+      run: npm install  # or yarn install
+
+    - name: Extract version from manifest.json
+      id: manifest
+      run: echo "::set-output name=version::$(node -p "require('./manifest.json').version")"
+
+    - name: Create GitHub Release
+      uses: actions/create-release@v1
+      with:
+        tag_name: ${{ steps.manifest.outputs.version }}
+        release_name: Release ${{ steps.manifest.outputs.version }}
+        body: Description of the changes.
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
