@@ -6,6 +6,7 @@ let isPaused = false;
 // Get references to elements
 const startButton = document.getElementById("startTimer");
 const startBreakButton = document.getElementById("startBreak");
+const repeatButton = document.getElementById("repeatTimer");
 
 const timerContent = document.getElementById("countdown");
 const inputContent = document.getElementById("inputSection");
@@ -40,7 +41,7 @@ function stopAlarm() {
 }
 
 // Main timer logic
-function startTimer(duration, callback, isBreak = false) {
+function startTimer(duration, callback, isBreak = false, breakCallback = false) {
     clearInterval(timerInterval); // Clear any existing timer
     let totalTime = duration * 60; // Convert minutes to seconds
     const displayTimer = document.getElementById("timer");
@@ -61,6 +62,8 @@ function startTimer(duration, callback, isBreak = false) {
                 toggleDisplay("startBreak", "none");
                 toggleDisplay("pauseTimer", "none");
                 toggleDisplay("resumeTimer", "none");
+                if (callback) callback();
+                if (breakCallback) breakCallback();
             }
             if (callback) callback();
         }
@@ -91,7 +94,9 @@ startButton.addEventListener("click", function(event) {
             stopAlarm(); 
             startTimer(breakTime, function() {
                 toggleDisplay("startBreak", "none");
-            }, true);
+            }, true, function() {
+                toggleDisplay("repeatTimer", "block");
+            });
         });
     }, true);
 });
@@ -100,6 +105,7 @@ document.getElementById("stopTimer").addEventListener("click", function() {
     clearInterval(timerInterval);
     stopAlarm();
     toggleDisplay("startBreak", "none");
+    toggleDisplay("repeatTimer", "none");
     showInputContent(workTime, breakTime);
     isPaused = false; 
 });
@@ -114,6 +120,24 @@ document.getElementById("resumeTimer").addEventListener("click", function() {
     isPaused = false;
     toggleDisplay("pauseTimer", "block");
     toggleDisplay("resumeTimer", "none");
+});
+
+repeatButton.addEventListener("click", function(event) {
+    event.stopPropagation();
+    stopAlarm(); 
+    const workTime = parseInt(document.getElementById("workTime").value) || 0;
+    const breakTime = parseInt(document.getElementById("breakTime").value) || 0;
+    toggleDisplay("repeatTimer", "none");
+    startTimer(workTime, function() {
+        startBreakButton.style.display = "block";
+        startBreakButton.addEventListener("click", function(event) {
+            event.stopPropagation();
+            toggleDisplay("startBreak", "none");
+            startTimer(breakTime, function() {
+                toggleDisplay("startBreak", "none");
+            }, true);
+        });
+    }, true);
 });
 
 
