@@ -2,24 +2,82 @@
 function createTodoItem(text, isChecked) {
     const li = document.createElement('li');
     
+    const container = document.createElement('div'); // Create a container
+    container.className = 'todo-container';
+    container.style.display = 'flex'; // Set display to flex
+    
     const checkbox = document.createElement('input');
     checkbox.type = 'checkbox';
     checkbox.className = 'todo-checkbox';
     checkbox.checked = isChecked;
-    li.appendChild(checkbox);
+    container.appendChild(checkbox); // Append to container
     
     const span = document.createElement('span');
     span.className = 'todo-text';
     span.textContent = text;
     span.style.textDecoration = isChecked ? 'line-through' : 'none';
-    li.appendChild(span);
+    container.appendChild(span); // Append to container
+    
+    li.appendChild(container); // Append the container to the list item
+
+    let clickTimer;
 
     // Add click event to the span
     span.addEventListener('click', function() {
-        checkbox.checked = !checkbox.checked;
-        span.style.textDecoration = checkbox.checked ? 'line-through' : 'none';
-        saveTodoList();
+        clearTimeout(clickTimer);
+        clickTimer = setTimeout(function() {
+            checkbox.checked = !checkbox.checked;
+            span.style.textDecoration = checkbox.checked ? 'line-through' : 'none';
+            saveTodoList();
+        }, 250);
     });
+    
+    // Add double-click event to the span
+    span.addEventListener('dblclick', function() {
+        clearTimeout(clickTimer); // Clear the single-click timer
+    
+        // Create an input element
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.value = span.textContent;
+        input.className = 'todo-edit';
+        input.style.display = 'inline-block';
+    
+        // Replace the span with the input element within the container
+        const container = span.parentNode;
+        container.replaceChild(input, span);
+    
+        // Focus the input element
+        input.focus();
+    
+        // Listen for 'Enter' key or loss of focus to save changes
+        input.addEventListener('keydown', function(event) {
+            if (event.keyCode === 13) {
+                saveChanges();
+            }
+        });
+    
+        input.addEventListener('blur', saveChanges);
+    
+        // Function to save changes and revert back to span
+        function saveChanges() {
+            if (input.value.trim() === '') {
+                setTimeout(() => {
+                    const closestLi = input.closest('li'); // Find the closest li parent
+                    if (closestLi && closestLi.parentNode) {
+                        closestLi.parentNode.removeChild(closestLi);
+                    }
+                    saveTodoList();
+                }, 0);
+            } else {
+                span.textContent = input.value;
+                input.parentNode.replaceChild(span, input);
+                saveTodoList();
+            }
+        }
+
+
+    });    
     
     return li;
 }
@@ -33,6 +91,9 @@ function saveTodoList() {
         };
     });
     localStorage.setItem('todoList', JSON.stringify(todos));
+
+    // Update the visibility of the "Clear Completed" button
+    updateClearButtonVisibility();
 }
 
 // Function to load the todo list from local storage
