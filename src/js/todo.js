@@ -220,6 +220,30 @@ async function fetchGoogleTaskLists(token) {
         return [];
     }
 }
+
+async function updateGoogleTaskStatus(token, taskListId, taskId, isCompleted) {
+    const status = isCompleted ? 'completed' : 'needsAction';
+    console.log(`Updating task with ID: ${taskId}, List ID: ${taskListId}, Status: ${status}`);
+    try {
+        const response = await fetch(`https://tasks.googleapis.com/tasks/v1/lists/${taskListId}/tasks/${taskId}`, {
+            method: 'PATCH',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ status })
+        });
+        if (!response.ok) {
+            const responseData = await response.json();
+            console.error('Response Data:', responseData);
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+    } catch (error) {
+        console.error(`An error occurred: ${error}`);
+    }
+}
+
+
  
 // Function to display Google Task Lists as tabs
 async function displayGoogleTaskLists() {
@@ -236,7 +260,7 @@ async function displayGoogleTaskLists() {
             switchTab(taskList.id);
         });
         tabs.appendChild(button);
-        
+
         // Create a ul element for this Google Task List
         const ul = document.createElement('ul');
         ul.id = `${taskList.id}-content`;
@@ -292,11 +316,38 @@ async function switchTab(tabId) {
         // Append new tasks
         tasks.forEach(task => {
             const li = document.createElement('li');
-            li.textContent = task.title;
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.className = 'google-task-checkbox';
+            checkbox.checked = task.status === 'completed';
+            checkbox.dataset.taskId = task.id;  // Store the task ID
+            li.appendChild(checkbox);
+
+            const span = document.createElement('span');
+            span.className = 'google-task-text';
+            span.textContent = task.title;
+            span.style.textDecoration = task.status === 'completed' ? 'line-through' : 'none';
+            li.appendChild(span);
+
             taskListElement.appendChild(li);
         });
+
+
+        // Add event listener for checkboxes
+        taskListElement.addEventListener('click', async function(e) {
+            if (e.target && e.target.className === 'google-task-checkbox') {
+                const textElement = e.target.nextSibling;
+                textElement.style.textDecoration = e.target.checked ? 'line-through' : 'none';
+                const taskId = e.target.dataset.taskId;  // Retrieve the task ID
+                const token = await getAuthToken();
+                updateGoogleTaskStatus(token, tabId, taskId, e.target.checked);
+            }
+        });
+
     }
     
 }
+
+
 
   
