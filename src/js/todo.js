@@ -203,25 +203,24 @@ async function fetchGoogleTaskLists(token) {
   }
 
   // Function to fetch Google Tasks for a specific Task List
-async function fetchGoogleTasks(token, taskListId) {
+  async function fetchGoogleTasks(token, taskListId) {
     try {
-      const response = await fetch(`https://tasks.googleapis.com/tasks/v1/lists/${taskListId}/tasks`, {
-        headers: {
-          'Authorization': `Bearer ${token}`
+        const response = await fetch(`https://tasks.googleapis.com/tasks/v1/lists/${taskListId}/tasks`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
         }
-      });
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      const googleTasks = await response.json();
-      return googleTasks.items || [];
+        const googleTasks = await response.json();
+        return googleTasks.items || [];
     } catch (error) {
-      console.error(`An error occurred: ${error}`);
-      return [];
+        console.error(`An error occurred: ${error}`);
+        return [];
     }
-  }
-  
-  
+}
+ 
 // Function to display Google Task Lists as tabs
 async function displayGoogleTaskLists() {
     const token = await getAuthToken();
@@ -229,14 +228,21 @@ async function displayGoogleTaskLists() {
     const tabs = document.querySelector('.tabs');
   
     googleTaskLists.forEach(taskList => {
-      const button = document.createElement('button');
-      button.className = 'tab-button';
-      button.id = taskList.id;
-      button.textContent = taskList.title;
-      button.addEventListener('click', function() {
-        switchTab(taskList.id);
-      });
-      tabs.appendChild(button);
+        const button = document.createElement('button');
+        button.className = 'tab-button';
+        button.id = taskList.id;
+        button.textContent = taskList.title;
+        button.addEventListener('click', function() {
+            switchTab(taskList.id);
+        });
+        tabs.appendChild(button);
+        
+        // Create a ul element for this Google Task List
+        const ul = document.createElement('ul');
+        ul.id = `${taskList.id}-content`;
+        ul.className = 'tab-content';
+        document.getElementById('inputSection').appendChild(ul);
+        
     });
   
     // Initially show the local tab as active
@@ -245,7 +251,7 @@ async function displayGoogleTaskLists() {
 
   
 // Function to switch tabs
-function switchTab(tabId) {
+async function switchTab(tabId) {
     // Remove active class from all tab buttons
     const allTabButtons = document.querySelectorAll('.tab-button');
     allTabButtons.forEach(el => el.classList.remove('active'));
@@ -271,6 +277,26 @@ function switchTab(tabId) {
             localContent.style.display = 'block';
         }
     }
+
+    if (tabId !== 'local') {
+        // Fetch and display tasks for this Google Task List
+        const token = await getAuthToken();
+        const tasks = await fetchGoogleTasks(token, tabId);
+        
+        // Clear previous tasks
+        const taskListElement = document.getElementById(`${tabId}-content`);
+        if (taskListElement) {
+            taskListElement.innerHTML = '';
+        }
+
+        // Append new tasks
+        tasks.forEach(task => {
+            const li = document.createElement('li');
+            li.textContent = task.title;
+            taskListElement.appendChild(li);
+        });
+    }
+    
 }
 
   
