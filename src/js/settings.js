@@ -118,7 +118,17 @@ async function getUserEmail(token) {
   return data.email;
 }
 
-// Function to update button based on login status
+// Save isLoggedIn state to localStorage
+function saveLoginState(isLoggedIn) {
+  localStorage.setItem('isLoggedIn', isLoggedIn.toString());
+  console.log('Login state saved:', isLoggedIn);
+}
+
+// Load isLoggedIn state from localStorage
+function loadLoginState() {
+  const savedState = localStorage.getItem('isLoggedIn');
+  return savedState === 'true';
+}
 
 async function updateGoogleAccountButton() {
   console.log("Updating Google Account Button");
@@ -131,8 +141,17 @@ async function updateGoogleAccountButton() {
     return;
   }
 
+  const isLoggedIn = loadLoginState();
+  let token;
+  try {
+    token = await getAuthToken();
+  } catch (error) {
+    console.error("Error:", JSON.stringify(error, null, 2));
+    return;
+  }
+
   if (isLoggedIn) {
-    const token = await getAuthToken();
+    console.log("User is logged in");
     const email = await getUserEmail(token);
     emailDisplay.textContent = `Logged in as ${email}`;
     button.textContent = 'Log Out';
@@ -144,18 +163,19 @@ async function updateGoogleAccountButton() {
           return;
         }
         console.log("Successfully logged out");
-        isLoggedIn = false;  // Explicitly set to false
+        saveLoginState(false);  // Save state to localStorage
         updateGoogleAccountButton();
       });
     };
   } else {
+    console.log("User is logged out");
     emailDisplay.textContent = '';
     button.textContent = 'Log In';
     button.onclick = async function() {
       try {
-        const token = await getAuthToken();
-        if (token) {
-          isLoggedIn = true;  // Explicitly set to true
+        const newToken = await getAuthToken();
+        if (newToken) {
+          saveLoginState(true);  // Save state to localStorage
           updateGoogleAccountButton();
         }
       } catch (error) {
@@ -164,6 +184,7 @@ async function updateGoogleAccountButton() {
     };
   }
 }
+
 
 
 
