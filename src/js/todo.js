@@ -154,10 +154,21 @@ document.addEventListener('DOMContentLoaded', function() {
     // Your existing code
     loadTodoList();
     updateClearButtonVisibility();
-  
-    // New: Display Google Tasks
-    displayGoogleTaskLists();
-  });
+
+    // New: Display Google Tasks and switch to the local tab
+    displayGoogleTaskLists().then(() => {
+        switchTab('local');
+    });
+
+    // Add event listener for the local tab
+    const localTab = document.getElementById('local');
+    if (localTab) {
+        localTab.addEventListener('click', function() {
+            switchTab('local');
+        });
+    }
+});
+
   
 
 async function getAuthToken() {
@@ -190,21 +201,76 @@ async function fetchGoogleTaskLists(token) {
       return [];
     }
   }
-  
-  // Function to display Google Task Lists on the page
-  async function displayGoogleTaskLists() {
-    const token = await getAuthToken();
-    const googleTaskLists = await fetchGoogleTaskLists(token);
-    if (Array.isArray(googleTaskLists) && googleTaskLists.length > 0) {
-      const googleTaskListElement = document.getElementById('googleTaskList');
-      googleTaskLists.forEach(taskList => {
-        const li = document.createElement('li');
-        li.textContent = taskList.title;
-        googleTaskListElement.appendChild(li);
+
+  // Function to fetch Google Tasks for a specific Task List
+async function fetchGoogleTasks(token, taskListId) {
+    try {
+      const response = await fetch(`https://tasks.googleapis.com/tasks/v1/lists/${taskListId}/tasks`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
       });
-    } else {
-      console.log("No task lists found or googleTaskLists is not an array.");
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const googleTasks = await response.json();
+      return googleTasks.items || [];
+    } catch (error) {
+      console.error(`An error occurred: ${error}`);
+      return [];
     }
   }
   
-  // Call the function to display 
+  
+// Function to display Google Task Lists as tabs
+async function displayGoogleTaskLists() {
+    const token = await getAuthToken();
+    const googleTaskLists = await fetchGoogleTaskLists(token);
+    const tabs = document.querySelector('.tabs');
+  
+    googleTaskLists.forEach(taskList => {
+      const button = document.createElement('button');
+      button.className = 'tab-button';
+      button.id = taskList.id;
+      button.textContent = taskList.title;
+      button.addEventListener('click', function() {
+        switchTab(taskList.id);
+      });
+      tabs.appendChild(button);
+    });
+  
+    // Initially show the local tab as active
+    switchTab('local');
+}
+
+  
+// Function to switch tabs
+function switchTab(tabId) {
+    // Remove active class from all tab buttons
+    const allTabButtons = document.querySelectorAll('.tab-button');
+    allTabButtons.forEach(el => el.classList.remove('active'));
+
+    // Hide all tab content
+    const allTabContents = document.querySelectorAll('.tab-content');
+    allTabContents.forEach(el => el.style.display = 'none');
+
+    // Activate the clicked tab and show its content
+    const tabButton = document.getElementById(tabId);
+    const tabContent = document.getElementById(`${tabId}-content`);
+
+    if (tabButton) {
+        tabButton.classList.add('active');
+    }
+
+    if (tabContent) {
+        tabContent.style.display = 'block';
+    } else if (tabId === 'local') {
+        // Special case for the local tab
+        const localContent = document.getElementById('local-content');
+        if (localContent) {
+            localContent.style.display = 'block';
+        }
+    }
+}
+
+  

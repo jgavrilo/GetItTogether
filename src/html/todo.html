@@ -8,21 +8,42 @@
     <script src="../js/theme.js" defer></script>
     <script src="../js/todo.js" defer></script>
     <title>To Do List</title>
+    <style>
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+        }
+        .tab-button {
+            padding: 10px;
+            cursor: pointer;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+    </style>
 </head>
 <body>
+    <div class="tabs">
+        <button class="tab-button active" id="local">Local</button>
+        <!-- Google task list tabs will be appended here -->
+    </div>
+
     <div id="inputSection">
         <div id="buttonSection">
             <button id="addTodo">Add</button>
             <input type="text" id="newTodo" placeholder="Add a new task...">
         </div>
-        <ul id="todoList">
-            <!--The list starts empty-->
-        </ul>
 
-        <ul id="googleTaskList">
-            <!-- Google tasks will be appended here -->
-        </ul>
-          
+        <div class="tab-content active" id="local-content">
+            <ul id="todoList">
+                <!-- The local list starts empty -->
+            </ul>
+        </div>
+        <!-- Google task list contents will be appended here -->
+
         <button id="clearCompleted">Clear Completed</button>
     </div>
 </body>
