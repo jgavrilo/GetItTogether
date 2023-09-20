@@ -7,10 +7,14 @@
   "permissions": [
     "identity"
   ],
+  "host_permissions": [ 
+    "https://www.googleapis.com/"
+  ],
   "oauth2": {
-    "client_id": "560269899876-7pen7eo2nanrk927aqmft5ptlj2qn1to.apps.googleusercontent.com",
+    "client_id": "560269899876-1o6s6hrjkqs2ul9hpn48bb7tdf5kjklj.apps.googleusercontent.com",
     "scopes": [
-      "https://www.googleapis.com/auth/userinfo.email"
+      "https://www.googleapis.com/auth/userinfo.email",
+      "https://www.googleapis.com/auth/tasks"
     ]
   },
   "action": {

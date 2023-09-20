@@ -150,8 +150,61 @@ document.getElementById('clearCompleted').addEventListener('click', function() {
     saveTodoList();
 });
 
-// Initialize
 document.addEventListener('DOMContentLoaded', function() {
+    // Your existing code
     loadTodoList();
     updateClearButtonVisibility();
-});
+  
+    // New: Display Google Tasks
+    displayGoogleTaskLists();
+  });
+  
+
+async function getAuthToken() {
+    return new Promise((resolve, reject) => {
+      chrome.identity.getAuthToken({ 'interactive': true }, function(token) {
+        if (chrome.runtime.lastError) {
+          reject(chrome.runtime.lastError);
+        } else {
+          resolve(token);
+        }
+      });
+    });
+  }
+  
+// Function to fetch Google Task Lists
+async function fetchGoogleTaskLists(token) {
+    try {
+      const response = await fetch(`https://tasks.googleapis.com/tasks/v1/users/@me/lists`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const googleTaskLists = await response.json();
+      return googleTaskLists.items || [];
+    } catch (error) {
+      console.error(`An error occurred: ${error}`);
+      return [];
+    }
+  }
+  
+  // Function to display Google Task Lists on the page
+  async function displayGoogleTaskLists() {
+    const token = await getAuthToken();
+    const googleTaskLists = await fetchGoogleTaskLists(token);
+    if (Array.isArray(googleTaskLists) && googleTaskLists.length > 0) {
+      const googleTaskListElement = document.getElementById('googleTaskList');
+      googleTaskLists.forEach(taskList => {
+        const li = document.createElement('li');
+        li.textContent = taskList.title;
+        googleTaskListElement.appendChild(li);
+      });
+    } else {
+      console.log("No task lists found or googleTaskLists is not an array.");
+    }
+  }
+  
+  // Call the function to display 
