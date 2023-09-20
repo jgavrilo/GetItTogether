@@ -85,18 +85,16 @@ document.addEventListener('tabSwitched', function() {
 // ... (existing code)
 
 // Function to get OAuth2 token
-async function getAuthToken() {
+function getAuthToken() {
   return new Promise((resolve, reject) => {
     chrome.identity.getAuthToken({ 'interactive': true }, function(token) {
       if (chrome.runtime.lastError) {
-        reject(chrome.runtime.lastError);
-      } else {
-        resolve(token);
+        return reject(chrome.runtime.lastError);
       }
+      resolve(token);
     });
   });
 }
-
 
 // Function to check if user is logged in
 async function checkLoginStatus() {
@@ -156,15 +154,26 @@ async function updateGoogleAccountButton() {
     console.log("User is logged in");
     const email = await getUserEmail(token);
     emailDisplay.textContent = `Logged in as ${email}`;
-    button.style.display = 'none';  // Hide the button when logged in
+    button.textContent = 'Log Out';
+    button.onclick = function() {
+      console.log("Attempting to log out");
+      chrome.identity.removeCachedAuthToken({ 'token': token }, function() {
+        if (chrome.runtime.lastError) {
+          console.error("Logout failed:", chrome.runtime.lastError);
+          return;
+        }
+        console.log("Successfully logged out");
+        saveLoginState(false);  // Save state to localStorage
+        updateGoogleAccountButton();
+      });
+    };
   } else {
     console.log("User is logged out");
     emailDisplay.textContent = '';
-    button.style.display = 'block';  // Show the button when logged out
     button.textContent = 'Log In';
     button.onclick = async function() {
       try {
-        const newToken = await getAuthToken();  // This will now prompt the user
+        const newToken = await getAuthToken();
         if (newToken) {
           saveLoginState(true);  // Save state to localStorage
           updateGoogleAccountButton();
@@ -175,3 +184,9 @@ async function updateGoogleAccountButton() {
     };
   }
 }
+
+
+
+
+
+// ... (existing code)
