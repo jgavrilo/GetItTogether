@@ -140,16 +140,28 @@ document.getElementById('todoList').addEventListener('click', function(e) {
     }
 });
 
-document.getElementById('clearCompleted').addEventListener('click', function() {
-    const items = document.querySelectorAll('#todoList li');
-    items.forEach(item => {
-        if (item.querySelector('.todo-checkbox').checked) {
-            item.remove();
+document.getElementById('clearCompleted').addEventListener('click', async function() {
+    const activeTab = document.querySelector('.tab-button.active');
+    if (activeTab) {
+        const tabId = activeTab.id;
+        if (tabId === 'local') {
+            // Clear completed tasks from local list
+            const items = document.querySelectorAll('#todoList li');
+            items.forEach(item => {
+                if (item.querySelector('.todo-checkbox').checked) {
+                    item.remove();
+                }
+            });
+            saveTodoList();
+        } else {
+            // Clear completed tasks from Google Task list
+            const token = await getAuthToken();
+            await clearCompletedGoogleTasks(token, tabId);
         }
-    });
+    }
     updateClearButtonVisibility();
-    saveTodoList();
 });
+
 
 document.addEventListener('DOMContentLoaded', function() {
     // Your existing code
