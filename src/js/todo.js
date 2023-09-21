@@ -103,13 +103,24 @@ function updateClearButtonVisibility() {
 }
 
 // Event listeners
-document.getElementById('addTodo').addEventListener('click', function() {
+document.getElementById('addTodo').addEventListener('click', async function() {
     const newTodo = document.getElementById('newTodo').value;
     if (newTodo) {
-        document.getElementById('todoList').appendChild(createTodoItem(newTodo, false));
+        const activeTab = document.querySelector('.tab-button.active');
+        if (activeTab) {
+            const tabId = activeTab.id;
+            if (tabId === 'local') {
+                // Add to local list
+                document.getElementById('todoList').appendChild(createTodoItem(newTodo, false));
+                saveTodoList();
+            } else {
+                // Add to Google Task list
+                const token = await getAuthToken();
+                await addTaskToGoogleTaskList(token, tabId, newTodo);
+            }
+        }
         document.getElementById('newTodo').value = '';
         updateClearButtonVisibility();
-        saveTodoList();
     }
 });
 
@@ -294,6 +305,44 @@ async function updateGoogleTaskTitle(token, taskListId, taskId, newTitle) {
     }
 }
 
+async function addTaskToGoogleTaskList(token, taskListId, taskTitle) {
+    try {
+        const response = await fetch(`https://tasks.googleapis.com/tasks/v1/lists/${taskListId}/tasks`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ title: taskTitle })
+        });
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        // Refresh the task list to show the new task
+        switchTab(taskListId);
+    } catch (error) {
+        console.error(`An error occurred: ${error}`);
+    }
+}
+
+async function clearCompletedGoogleTasks(token, taskListId) {
+    try {
+        const tasks = await fetchGoogleTasks(token, taskListId);
+        const completedTasks = tasks.filter(task => task.status === 'completed');
+        for (const task of completedTasks) {
+            await fetch(`https://tasks.googleapis.com/tasks/v1/lists/${taskListId}/tasks/${task.id}`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+        }
+        // Refresh the task list to remove the completed tasks
+        switchTab(taskListId);
+    } catch (error) {
+        console.error(`An error occurred: ${error}`);
+    }
+}
 
 // Function to switch tabs
 async function switchTab(tabId) {
