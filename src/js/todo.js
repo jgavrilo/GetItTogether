@@ -21,19 +21,9 @@ function createTodoItem(text, isChecked) {
     li.appendChild(container); // Append the container to the list item
 
     let clickTimer;
-
-    // Add click event to the span
-    span.addEventListener('click', function() {
-        clearTimeout(clickTimer);
-        clickTimer = setTimeout(function() {
-            checkbox.checked = !checkbox.checked;
-            span.style.textDecoration = checkbox.checked ? 'line-through' : 'none';
-            saveTodoList();
-        }, 250);
-    });
     
     // Add double-click event to the span
-    span.addEventListener('dblclick', function() {
+    span.addEventListener('click', function() {
         clearTimeout(clickTimer); // Clear the single-click timer
     
         // Create an input element
@@ -361,17 +351,8 @@ async function switchTab(tabId) {
             span.style.textDecoration = task.status === 'completed' ? 'line-through' : 'none';
             li.appendChild(span);
 
-            // New code: Add click event to the span
-            span.addEventListener('click', async function() {
-                checkbox.checked = !checkbox.checked;
-                span.style.textDecoration = checkbox.checked ? 'line-through' : 'none';
-                const taskId = checkbox.dataset.taskId;  // Retrieve the task ID
-                const token = await getAuthToken();
-                updateGoogleTaskStatus(token, tabId, taskId, checkbox.checked);
-            });
-
             // Add double-click event to the span
-            span.addEventListener('dblclick', function() {
+            span.addEventListener('click', function() {
                 // Create an input element
                 const input = document.createElement('input');
                 input.type = 'text';
