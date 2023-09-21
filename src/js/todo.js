@@ -244,7 +244,6 @@ async function updateGoogleTaskStatus(token, taskListId, taskId, isCompleted) {
 }
 
 
- 
 // Function to display Google Task Lists as tabs
 async function displayGoogleTaskLists() {
     const token = await getAuthToken();
@@ -274,6 +273,38 @@ async function displayGoogleTaskLists() {
 }
 
   
+async function saveGoogleTaskChanges(input, span, li, taskListId, taskId) {
+    if (input.value.trim() === '') {
+        li.remove();
+    } else {
+        span.textContent = input.value;
+        li.replaceChild(span, input);
+
+        // Update the task title in Google Tasks
+        const token = await getAuthToken();
+        await updateGoogleTaskTitle(token, taskListId, taskId, input.value);
+    }
+}
+
+async function updateGoogleTaskTitle(token, taskListId, taskId, newTitle) {
+    try {
+        const response = await fetch(`https://tasks.googleapis.com/tasks/v1/lists/${taskListId}/tasks/${taskId}`, {
+            method: 'PATCH',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ title: newTitle })
+        });
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+    } catch (error) {
+        console.error(`An error occurred: ${error}`);
+    }
+}
+
+
 // Function to switch tabs
 async function switchTab(tabId) {
     // Remove active class from all tab buttons
@@ -311,6 +342,7 @@ async function switchTab(tabId) {
         const taskListElement = document.getElementById(`${tabId}-content`);
         if (taskListElement) {
             taskListElement.innerHTML = '';
+            taskListElement.style.width = '100%';
         }
 
         // Append new tasks
@@ -328,6 +360,42 @@ async function switchTab(tabId) {
             span.textContent = task.title;
             span.style.textDecoration = task.status === 'completed' ? 'line-through' : 'none';
             li.appendChild(span);
+
+            // New code: Add click event to the span
+            span.addEventListener('click', async function() {
+                checkbox.checked = !checkbox.checked;
+                span.style.textDecoration = checkbox.checked ? 'line-through' : 'none';
+                const taskId = checkbox.dataset.taskId;  // Retrieve the task ID
+                const token = await getAuthToken();
+                updateGoogleTaskStatus(token, tabId, taskId, checkbox.checked);
+            });
+
+            // Add double-click event to the span
+            span.addEventListener('dblclick', function() {
+                // Create an input element
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.value = span.textContent;
+                input.className = 'google-task-edit';
+                input.style.display = 'inline-block';
+                
+                // Replace the span with the input element within the li
+                li.replaceChild(input, span);
+
+                // Focus the input element
+                input.focus();
+
+                // Listen for 'Enter' key or loss of focus to save changes
+                input.addEventListener('keydown', async function(event) {
+                    if (event.keyCode === 13) {
+                        await saveGoogleTaskChanges(input, span, li, tabId, task.id);
+                    }
+                });
+
+                input.addEventListener('blur', async function() {
+                    await saveGoogleTaskChanges(input, span, li, tabId, task.id);
+                });
+            });
 
             taskListElement.appendChild(li);
         });
