@@ -197,6 +197,14 @@ document.addEventListener('DOMContentLoaded', function() {
             switchTab('local');
         });
     }
+
+    const deleteListButton = document.getElementById('deleteList');
+    if (deleteListButton) {
+      deleteListButton.addEventListener('click', function() {
+        // Your code to delete the list
+      });
+    }
+
 });
 
   
@@ -280,6 +288,20 @@ async function displayGoogleTaskLists() {
     const googleTaskLists = await fetchGoogleTaskLists(token);
     const tabs = document.querySelector('.tabs');
   
+    // Clear existing tabs
+    tabs.innerHTML = '';
+    
+    // Create and append the "local" tab first
+    const localTab = document.createElement('button');
+    localTab.id = 'local';
+    localTab.className = 'tab-button';
+    localTab.textContent = 'Local';
+    localTab.addEventListener('click', function() {
+        switchTab('local');
+    });
+    tabs.appendChild(localTab);
+
+
     googleTaskLists.forEach(taskList => {
         const button = document.createElement('button');
         button.className = 'tab-button';
@@ -298,6 +320,20 @@ async function displayGoogleTaskLists() {
         
     });
   
+    // Add "+" button at the end
+    const addButton = document.createElement('button');
+    addButton.id = 'addNewListTab';
+    addButton.className = 'tab-button';
+    addButton.textContent = '+';
+    addButton.addEventListener('click', async function() {
+        const listName = prompt("Enter the name of the new list:");
+        if (listName) {
+            const token = await getAuthToken();
+            await createNewGoogleTaskList(token, listName);
+        }
+    });
+    tabs.appendChild(addButton);
+
     // Initially show the local tab as active
     switchTab('local');
 }
@@ -401,6 +437,15 @@ async function switchTab(tabId) {
         }
     }
 
+    const deleteListButton = document.getElementById('deleteList');
+    if (deleteListButton) {
+      if (tabId === 'local') {
+        deleteListButton.style.display = 'none';
+      } else {
+        deleteListButton.style.display = 'block';
+      }
+    }
+    
     if (tabId !== 'local') {
         // Fetch and display tasks for this Google Task List
         const token = await getAuthToken();
@@ -479,4 +524,82 @@ async function switchTab(tabId) {
 
 
 
+  
+////////!SECTION
+
+
+// Function to create a new Google Task List
+async function createNewGoogleTaskList(token, listName) {
+    try {
+        const response = await fetch(`https://tasks.googleapis.com/tasks/v1/users/@me/lists`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ title: listName })
+        });
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        // Refresh the task lists to show the new list
+        displayGoogleTaskLists();
+    } catch (error) {
+        console.error(`An error occurred: ${error}`);
+    }
+
+    // Event listener for the "Add New List" button
+    document.getElementById('addNewListTab').addEventListener('click', async function() {
+        const listName = prompt("Enter the name of the new list:");
+        if (listName) {
+            const token = await getAuthToken();
+            await createNewGoogleTaskList(token, listName);
+        }
+    });
+
+}
+
+async function deleteGoogleTaskList(token, taskListId) {
+    try {
+      const response = await fetch(`https://tasks.googleapis.com/tasks/v1/users/@me/lists/${taskListId}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return true;
+    } catch (error) {
+      console.error(`An error occurred: ${error}`);
+      return false;
+    }
+  }
+  
+
+  document.getElementById('deleteList').addEventListener('click', async function() {
+    const activeTab = document.querySelector('.tab-button.active');
+    if (activeTab) {
+        const tabId = activeTab.id;
+        
+        // Fetch the tasks in the Google Task list to check if it's empty
+        const token = await getAuthToken();
+        const tasks = await fetchGoogleTasks(token, tabId);
+        
+        const isConfirmed = window.confirm("Are you sure you want to delete this list?");
+        if (!isConfirmed) {
+        return;
+        }
+        
+
+        // Delete the Google Task list
+        const deleteSuccess = await deleteGoogleTaskList(token, tabId);
+        if (deleteSuccess) {
+            // Remove the tab from the DOM or refresh the list of tabs
+            activeTab.remove();
+        }
+        
+    }
+});
   
