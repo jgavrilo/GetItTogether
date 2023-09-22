@@ -96,11 +96,28 @@ function loadTodoList() {
 }
 
 // Function to update the visibility of the clear completed button
-function updateClearButtonVisibility() {
-    const todoList = document.getElementById('todoList');
+async function updateClearButtonVisibility() {
     const clearCompletedButton = document.getElementById('clearCompleted');
-    clearCompletedButton.style.display = todoList.children.length === 0 ? 'none' : 'block';
+    const activeTab = document.querySelector('.tab-button.active');
+    let hasCompletedTasks = false;
+
+    if (activeTab) {
+        const tabId = activeTab.id;
+        if (tabId === 'local') {
+            // Check for completed tasks in local list
+            const items = document.querySelectorAll('#todoList li');
+            hasCompletedTasks = Array.from(items).some(item => item.querySelector('.todo-checkbox').checked);
+        } else {
+            // Check for completed tasks in Google Task list
+            const token = await getAuthToken();
+            const tasks = await fetchGoogleTasks(token, tabId);
+            hasCompletedTasks = tasks.some(task => task.status === 'completed');
+        }
+    }
+
+    clearCompletedButton.style.display = hasCompletedTasks ? 'block' : 'none';
 }
+
 
 // Event listeners
 document.getElementById('addTodo').addEventListener('click', async function() {
@@ -450,12 +467,14 @@ async function switchTab(tabId) {
                 textElement.style.textDecoration = e.target.checked ? 'line-through' : 'none';
                 const taskId = e.target.dataset.taskId;  // Retrieve the task ID
                 const token = await getAuthToken();
-                updateGoogleTaskStatus(token, tabId, taskId, e.target.checked);
+                await updateGoogleTaskStatus(token, tabId, taskId, e.target.checked);
+                await updateClearButtonVisibility();
             }
         });
 
     }
-    
+    // Update the visibility of the "Clear Completed" button
+    await updateClearButtonVisibility();   
 }
 
 
