@@ -10,10 +10,13 @@
     <title>To Do List</title>
 </head>
 <body>
-    <div class="tabs">
-        <button class="tab-button active" id="local">Local</button>
-        <!-- Google task list tabs will be appended here -->
+    <div class="tabs-wrapper">
+        <div class="tabs">
+            <button class="tab-button active" id="local">Local</button>
+            <!-- Google task list tabs will be appended here -->
+        </div>
     </div>
+    
 
     <div id="buttonSection">
         <button id="addTodo">Add</button>
@@ -30,8 +33,8 @@
     </div>
 
     <div id="bottomButtons">
-        <button id="clearCompleted">Clear Completed</button>
-        <button id="deleteList">Delete List</button>
+        <button id="clearCompleted" class="hidden">Clear Completed</button>
+        <button id="deleteList" class="hidden">Delete List</button>        
     </div>
 
     

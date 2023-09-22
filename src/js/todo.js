@@ -185,6 +185,11 @@ document.addEventListener('DOMContentLoaded', function() {
     loadTodoList();
     updateClearButtonVisibility();
 
+    const deleteListButton = document.getElementById('deleteList');
+    if (deleteListButton) {
+        deleteListButton.style.display = 'none';
+    }
+
     // New: Display Google Tasks and switch to the local tab
     displayGoogleTaskLists().then(() => {
         switchTab('local');
@@ -198,16 +203,23 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    const deleteListButton = document.getElementById('deleteList');
     if (deleteListButton) {
       deleteListButton.addEventListener('click', function() {
         // Your code to delete the list
       });
     }
 
-});
+    const tabsWrapper = document.querySelector('.tabs-wrapper');
 
-  
+    tabsWrapper.addEventListener('wheel', function(event) {
+        // Prevent the default scrolling behavior
+        event.preventDefault();
+
+        // Scroll horizontally based on the vertical scroll amount
+        tabsWrapper.scrollLeft += event.deltaY;
+    });
+
+});
 
 async function getAuthToken() {
     return new Promise((resolve, reject) => {
@@ -427,6 +439,15 @@ async function switchTab(tabId) {
         tabButton.classList.add('active');
     }
 
+    const deleteListButton = document.getElementById('deleteList');
+    if (deleteListButton) {
+      if (tabId === 'local') {
+        deleteListButton.style.display = 'none';
+      } else {
+        deleteListButton.style.display = 'block';
+      }
+    }
+
     if (tabContent) {
         tabContent.style.display = 'block';
     } else if (tabId === 'local') {
@@ -435,15 +456,6 @@ async function switchTab(tabId) {
         if (localContent) {
             localContent.style.display = 'block';
         }
-    }
-
-    const deleteListButton = document.getElementById('deleteList');
-    if (deleteListButton) {
-      if (tabId === 'local') {
-        deleteListButton.style.display = 'none';
-      } else {
-        deleteListButton.style.display = 'block';
-      }
     }
     
     if (tabId !== 'local') {
