@@ -4,8 +4,25 @@ body {
     margin: 0;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    
+}
+
+/* Tabs */
+.tabs {
+    position: fixed; /* Make the tabs stick to the top */
+    top: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    background-color: #fff; /* Add a background color */
+    z-index: 1; /* Make sure it's above other elements */
+    height: 50px;  /* Define a height for the tabs */
+}
+
+.tab-button {
+    width: 100px;  /* Set the width to 80px */
+    cursor: pointer;
+    text-align: center; /* Center the text */
 }
 
 /* Buttons */
@@ -31,6 +48,13 @@ ul {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+}
+
+#buttonSection {
+    margin-top: 50px; /* Same as the height of the tabs */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 #inputSection div {
@@ -79,4 +103,15 @@ h2 {
     display: flex;
     justify-content: space-between;
     width: 100%;
+}
+
+/* Bottom Buttons */
+#bottomButtons {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
 }
