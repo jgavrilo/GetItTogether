@@ -33,3 +33,6 @@ jobs:
         body: Description of the changes.
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Create Zip Extension
+      run: zip -r My-Chrome-Tool-Set.zip . 
