@@ -8,21 +8,13 @@ function openWindow(file, windowName, dimensions) {
     // Create a new popup window
     chrome.windows.create({ url: fullUrl, type: 'popup', width: dimensions.width, height: dimensions.height }, function(window) {
         
+        console.log("Window created:", window);
+
         // Store the window ID
         windowIds[windowName] = window.id;
         
         // Store the window ID in local storage
-        chrome.storage.local.set({ [windowName]: window.id });
-        
-        // Remove the window ID when the window is closed
-        chrome.windows.onRemoved.addListener(function(removedId) {
-            if (removedId === windowIds[windowName]) {
-                delete windowIds[windowName];
-                
-                // Remove from local storage
-                chrome.storage.local.remove(windowName);
-            }
-        });
+        localStorage.setItem(windowName, window.id.toString());
     });
 }
 
@@ -30,17 +22,37 @@ function openWindow(file, windowName, dimensions) {
 function handleWindowOpen(windowName, buttonId, file, dimensions) {
     document.getElementById(buttonId).addEventListener('click', function() {
         // Check if the window is already open using local storage
-        chrome.storage.local.get([windowName], function(result) {
-            if (result[windowName]) {
-                // If the window is already open, bring it to the front
-                chrome.windows.update(result[windowName], { focused: true });
-            } else {
-                // Otherwise, open a new window
-                openWindow(file, windowName, dimensions);
-            }
-        });
+        const storedId = localStorage.getItem(windowName);
+        console.log("Stored window ID:", storedId);
+
+        if (storedId) {
+            // If the window is already open, bring it to the front
+            chrome.windows.get(parseInt(storedId), {}, function(window) {
+                if (chrome.runtime.lastError) {
+                    console.error("Error occurred:", chrome.runtime.lastError.message);
+                    // Open a new window if the stored one doesn't exist
+                    openWindow(file, windowName, dimensions);
+                } else {
+                    chrome.windows.update(parseInt(storedId), { focused: true });
+                }
+            });
+        } else {
+            // Otherwise, open a new window
+            openWindow(file, windowName, dimensions);
+        }
     });
 }
+
+// Attach an event listener to remove the window ID when the window is closed
+chrome.windows.onRemoved.addListener(function(removedId) {
+    for (const [name, id] of Object.entries(windowIds)) {
+        if (id === removedId) {
+            console.log("Window removed:", removedId);
+            delete windowIds[name];
+            localStorage.removeItem(name);
+        }
+    }
+});
 
 // Configuration for different window types
 const timerWindowName = 'Timer';
