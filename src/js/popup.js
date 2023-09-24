@@ -1,42 +1,35 @@
 // Object to keep track of window IDs
 let windowIds = {};
 
-/**
- * Function to open a Chrome popup window and set its flags.
- *
- * @param {string} file - The file URL to open.
- * @param {string} windowName - The unique name to identify the window.
- * @param {object} dimensions - The dimensions of the window.
- */
+// Function to open a Chrome popup window and set its flags.
 function openWindow(file, windowName, dimensions) {
     const fullUrl = chrome.runtime.getURL(file);
-
+  
     // Create a new popup window
     chrome.windows.create({ url: fullUrl, type: 'popup', width: dimensions.width, height: dimensions.height }, function(window) {
         
         // Store the window ID
         windowIds[windowName] = window.id;
-
+        
+        // Store the window ID in local storage
+        chrome.storage.local.set({ [windowName]: window.id });
+        
         // Remove the window ID when the window is closed
         chrome.windows.onRemoved.addListener(function(removedId) {
             if (removedId === windowIds[windowName]) {
                 delete windowIds[windowName];
+                
+                // Remove from local storage
+                chrome.storage.local.remove(windowName);
             }
         });
     });
 }
 
-/**
- * Function to handle window-opening logic.
- *
- * @param {string} windowName - The unique name to identify the window.
- * @param {string} buttonId - The ID of the button that opens the window.
- * @param {string} file - The file URL to open.
- * @param {object} dimensions - The dimensions of the window.
- */
+// Function to handle window-opening logic
 function handleWindowOpen(windowName, buttonId, file, dimensions) {
     document.getElementById(buttonId).addEventListener('click', function() {
-        // Check if the window is already open
+        // Check if the window is already open using local storage
         chrome.storage.local.get([windowName], function(result) {
             if (result[windowName]) {
                 // If the window is already open, bring it to the front
