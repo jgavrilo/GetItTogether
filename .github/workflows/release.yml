@@ -3,7 +3,7 @@ name: Create Release
 on:
   push:
     branches:
-      - main  # or your default branch
+      - main 
 
 jobs:
   release:
@@ -33,3 +33,12 @@ jobs:
         body: Description of the changes.
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Create Zip Extension
+      run: zip -r My-Chrome-Tool-Set.zip . 
+
+    - name: Upload ZIP as Artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: My-Chrome-Tool-Set
+        path: ./My-Chrome-Tool-Set.zip
