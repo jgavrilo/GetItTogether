@@ -37,52 +37,59 @@ document.addEventListener('DOMContentLoaded', function() {
     openTab(event, 'GoogleAccount');
   });
 
-  // New: Update Google Account button
-  updateGoogleAccountButton();
 });
 
 // New: Variable to keep track of login status
 let isLoggedIn = false;
 
-// New: Function to check if user is logged in
-function checkLoginStatus() {
-  // Your logic to check login status
-  return isLoggedIn;
+// Function to check if user is logged in without initiating login
+async function checkLoginStatusWithoutLogin() {
+  const savedState = localStorage.getItem('isLoggedIn');
+  return savedState === 'true';
 }
 
-// New: Function to update button based on login status
-function updateGoogleAccountButton() {
-  const button = document.getElementById('googleAccountButton');
+// Function to initiate Google login
+async function initiateGoogleLogin() {
+  try {
+    const token = await getAuthToken();
+    if (token) {
+      saveLoginState(true);
+      updateGoogleAccountButton();
+    }
+  } catch (error) {
+    console.error("Error:", JSON.stringify(error, null, 2));
+  }
+}
 
-  if (!button) {
-    console.error("googleAccountButton is null");
+// Updated function to update button based on login status
+async function updateGoogleAccountButton() {
+  const button = document.getElementById('googleAccountButton');
+  const emailDisplay = document.getElementById('userEmail');
+
+  if (!button || !emailDisplay) {
+    console.error("Element(s) not found");
     return;
   }
 
-  isLoggedIn = checkLoginStatus();
+  const isLoggedIn = await checkLoginStatusWithoutLogin();
 
   if (isLoggedIn) {
-    button.textContent = 'Disconnect from Google Account';
-    button.onclick = function() {
-      isLoggedIn = false;
-      updateGoogleAccountButton();
-    };
+    const token = await getAuthToken();
+    const email = await getUserEmail(token);
+    emailDisplay.textContent = `Logged in as ${email}`;
+    button.style.display = 'none';
   } else {
-    button.textContent = 'Connect to Google Account';
-    button.onclick = function() {
-      isLoggedIn = true;
-      updateGoogleAccountButton();
-    };
+    emailDisplay.textContent = '';
+    button.style.display = 'block';
+    button.textContent = 'Log In';
+    button.onclick = initiateGoogleLogin;
   }
 }
 
-// New: Listen for the custom tabSwitched event to update the button
+// Listen for the custom tabSwitched event to update the button
 document.addEventListener('tabSwitched', function() {
   updateGoogleAccountButton();
 });
-
-
-// ... (existing code)
 
 // Function to get OAuth2 token
 async function getAuthToken() {
@@ -144,18 +151,11 @@ async function updateGoogleAccountButton() {
   }
 
   const isLoggedIn = loadLoginState();
-  let token;
-  try {
-    token = await getAuthToken();
-  } catch (error) {
-    console.error("Error:", JSON.stringify(error, null, 2));
-    return;
-  }
 
   if (isLoggedIn) {
+    // If the user is logged in, you can optionally fetch the token and email here
+    // Or you can skip this part if you don't need to display the email
     console.log("User is logged in");
-    const email = await getUserEmail(token);
-    emailDisplay.textContent = `Logged in as ${email}`;
     button.style.display = 'none';  // Hide the button when logged in
   } else {
     console.log("User is logged out");
@@ -175,3 +175,4 @@ async function updateGoogleAccountButton() {
     };
   }
 }
+

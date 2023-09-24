@@ -1,14 +1,39 @@
 let windowIds = {};
 
+// Function to actually open the window and set flags
+function openWindow(file, windowName, dimensions) {
+    const fullUrl = chrome.runtime.getURL(file);
+    chrome.windows.create({ url: fullUrl, type: 'popup', width: dimensions.width, height: dimensions.height }, function(window) {
+        
+        // Save to local storage
+        chrome.storage.local.set({ [windowName]: window.id }, function() {
+            console.log('Window ID saved');
+        });
+
+        // Remove the window ID when the window is closed
+        chrome.windows.onRemoved.addListener(function(removedId) {
+            chrome.storage.local.get([windowName], function(result) {
+                if (removedId === result[windowName]) {
+                    chrome.storage.local.remove([windowName], function() {
+                        console.log('Window ID removed');
+                    });
+                }
+            });
+        });
+    });
+}
+
 // Function to handle window opening logic
 function handleWindowOpen(windowName, buttonId, file, dimensions) {
     document.getElementById(buttonId).addEventListener('click', function() {
-        if (windowIds[windowName]) {
-            // If the window is already open, bring it to the front
-            chrome.windows.update(windowIds[windowName], { focused: true });
-        } else {
-            openWindow(file, windowName, dimensions);
-        }
+        chrome.storage.local.get([windowName], function(result) {
+            if (result[windowName]) {
+                // If the window is already open, bring it to the front
+                chrome.windows.update(result[windowName], { focused: true });
+            } else {
+                openWindow(file, windowName, dimensions);
+            }
+        });
     });
 }
 

@@ -1,9 +1,9 @@
 /* Variables for Two-tone Theme */
 :root {
   --primary-color: #000000;       /* Background Color */
-  --secondary-color: #00FF00;     /* Text Color */
-  --third-color: #0000FF;         /* Accent Color 1 */
-  --fourth-color: #FF00FF;         /* Accent Color 2 */
+  --secondary-color: #FFFFFF;     /* Text Color */
+  --third-color: #FFFFFF;         /* Accent Color 1 */
+  --fourth-color: #000000;         /* Accent Color 2 */
   --text-color: var(--secondary-color);
   --button-color: var(--third-color);
   --button-text-color: var(--primary-color);

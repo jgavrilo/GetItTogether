@@ -179,8 +179,13 @@ document.getElementById('clearCompleted').addEventListener('click', async functi
     updateClearButtonVisibility();
 });
 
+// Function to check if user is logged in without initiating login
+async function checkLoginStatusWithoutLogin() {
+    const savedState = localStorage.getItem('isLoggedIn');
+    return savedState === 'true';
+  }
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', async function() {
     // Your existing code
     loadTodoList();
     updateClearButtonVisibility();
@@ -189,11 +194,16 @@ document.addEventListener('DOMContentLoaded', function() {
     if (deleteListButton) {
         deleteListButton.style.display = 'none';
     }
+    // New: Check if the user is logged in to Google
+    const isLoggedIn = await checkLoginStatusWithoutLogin();  // Make sure this function is defined
 
-    // New: Display Google Tasks and switch to the local tab
-    displayGoogleTaskLists().then(() => {
-        switchTab('local');
-    });
+    if (isLoggedIn) {
+        // Display Google Tasks and switch to the local tab
+        await displayGoogleTaskLists();
+    }
+
+    // Switch to the local tab regardless of login status
+    switchTab('local');
 
     // Add event listener for the local tab
     const localTab = document.getElementById('local');

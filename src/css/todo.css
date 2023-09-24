@@ -18,7 +18,6 @@ body {
     top: 0;
     left: 0;
     right: 0;
-    background-color: #fff;
     z-index: 1;
     height: 50px;
     overflow-x: auto;  /* Enable horizontal scrolling */
