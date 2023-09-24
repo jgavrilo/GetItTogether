@@ -1,0 +1,31 @@
+name: Package
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v1
+
+    - name: Install Dependencies
+      run: npm install
+
+    - name: Build
+      run: npm run build  # This assumes you have a "build" script in your package.json
+      
+    - name: Zip Extension
+      run: zip -r My-Chrome-Tool-Set.zip ./My-Chrome-Tool-Set  # Make sure the path is correct
+
+    - name: Upload ZIP as Artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: My-Chrome-Tool-Set  # Simplified the name
+        path: ./My-Chrome-Tool-Set.zip  # Adjust the path accordingly
