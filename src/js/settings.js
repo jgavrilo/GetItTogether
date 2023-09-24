@@ -156,6 +156,8 @@ async function updateGoogleAccountButton() {
     // If the user is logged in, you can optionally fetch the token and email here
     // Or you can skip this part if you don't need to display the email
     console.log("User is logged in");
+    const email = await getUserEmail(token);
+    emailDisplay.textContent = `Logged in as ${email}`;
     button.style.display = 'none';  // Hide the button when logged in
   } else {
     console.log("User is logged out");

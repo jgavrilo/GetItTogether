@@ -1,8 +1,10 @@
+// Global variables to hold the test alarm sound and its playing state
 let testAlarmSound = null;
 let isAlarmPlaying = false;
 
+// Event listener to execute once the DOM is fully loaded
 document.addEventListener('DOMContentLoaded', function() {
-    // Load the saved alarm from local storage
+    // Load the previously selected alarm sound from local storage
     const savedAlarm = localStorage.getItem('selectedAlarm');
     if (savedAlarm) {
         const savedElement = document.getElementById(savedAlarm.split('.')[0]);
@@ -16,86 +18,86 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    // Add event listeners to radio buttons to stop the test alarm
+    // Attach click event listeners to all radio buttons to stop test alarm
     const radioButtons = document.querySelectorAll('input[name="alarm"]');
     radioButtons.forEach(radioButton => {
         radioButton.addEventListener('click', function() {
-            stopTestAlarm(); // Stop the alarm and update the button text
+            stopTestAlarm(); // Stop any playing test alarm
         });
     });
 
-    // Handle alarm form submission
+    // Handle submission of the alarm form to save the selected alarm
     const alarmForm = document.getElementById('alarmForm');
     if (alarmForm) {
         alarmForm.addEventListener('submit', function(event) {
             event.preventDefault();
             const formData = new FormData(event.target);
             const selectedAlarm = formData.get('alarm');
-            localStorage.setItem('selectedAlarm', selectedAlarm);
+            localStorage.setItem('selectedAlarm', selectedAlarm); // Save to local storage
         });
     }
 
-    // Handle "Test" button click
+    // Handle "Test" button clicks to either play or stop test alarm
     const testButton = document.getElementById('testButton');
     if (testButton) {
         testButton.addEventListener('click', function(event) {
             event.preventDefault();
             if (isAlarmPlaying) {
-                stopTestAlarm(); // Stop the alarm if it's playing
-                testButton.textContent = 'Test'; // Change button text to "Test"
+                stopTestAlarm();  // Stop alarm
+                testButton.textContent = 'Test'; // Reset button label
             } else {
-                playTestAlarm(); // Play the alarm if it's not playing
-                testButton.textContent = 'Stop'; // Change button text to "Stop"
+                playTestAlarm();  // Start alarm
+                testButton.textContent = 'Stop'; // Change button label
             }
-            isAlarmPlaying = !isAlarmPlaying; // Toggle the flag
+            isAlarmPlaying = !isAlarmPlaying; // Toggle alarm state
         });
     }
 
 });
 
-// Event listener to pause the alarm and reset it if the tab switches
+// Event listener for when the tab switches, to pause and reset the test alarm
 document.addEventListener('tabSwitched', function() {
     if (testAlarmSound) {
       testAlarmSound.pause();
       testAlarmSound.currentTime = 0;
     }
-  });
-  
-// Function to play test alarm
+});
+
+// Function to play the test alarm sound
 function playTestAlarm() {
     const selectedRadio = document.querySelector('input[name="alarm"]:checked');
     if (selectedRadio) {
-      const selectedAlarm = selectedRadio.value;
-      const audioPath = `../../assets/audio/alarms/${selectedAlarm}`;
-      testAlarmSound = new Audio(audioPath);
-      testAlarmSound.play().catch(error => {
-        console.error("Failed to play:", error.message);
-    });
+        const selectedAlarm = selectedRadio.value;
+        const audioPath = `../../assets/audio/alarms/${selectedAlarm}.mp3`;
+        testAlarmSound = new Audio(audioPath);
+        testAlarmSound.play().catch(error => {
+            console.error("Failed to play:", error.message);
+        });
     } else {
-      console.warn("No alarm selected");
+        console.warn("No alarm selected"); // Log a warning if no alarm is selected
     }
-  }
-  
-// Function to stop test alarm
+}
+
+// Function to stop the test alarm sound and reset its state
 function stopTestAlarm() {
     if (testAlarmSound) {
         testAlarmSound.pause();
         testAlarmSound.currentTime = 0;
     }
-    isAlarmPlaying = false; // Set the flag to false
-    document.getElementById('testButton').textContent = 'Test'; // Update the button text to "Test"
+    isAlarmPlaying = false; // Reset the alarm state
+    document.getElementById('testButton').textContent = 'Test'; // Reset button label
 }
 
-// Event listener to pause the alarm, reset it, and update the radio button if the tab switches
+// Event listener for when the tab switches, to reset the radio button to the saved alarm sound
 document.addEventListener('tabSwitched', function() {
     if (testAlarmSound) {
         testAlarmSound.pause();
         testAlarmSound.currentTime = 0;
     }
-    isAlarmPlaying = false; // Set the flag to false
-    document.getElementById('testButton').textContent = 'Test'; // Update the button text to "Test"
+    isAlarmPlaying = false; // Reset alarm state
+    document.getElementById('testButton').textContent = 'Test'; // Reset button label
 
-    // Load the saved alarm from local storage and update the radio button
+    // Load the saved alarm and update the radio button
     const savedAlarm = localStorage.getItem('selectedAlarm');
     if (savedAlarm) {
         const savedElement = document.getElementById(savedAlarm.split('.')[0]);
@@ -104,4 +106,3 @@ document.addEventListener('tabSwitched', function() {
         }
     }
 });
-
