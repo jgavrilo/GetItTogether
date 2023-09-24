@@ -22,10 +22,10 @@ jobs:
       run: npm run build  # This assumes you have a "build" script in your package.json
       
     - name: Zip Extension
-      run: zip -r My-Chrome-Tool-Set.zip ./My-Chrome-Tool-Set  # Make sure the path is correct
-
+      run: zip -r My-Chrome-Tool-Set.zip . 
+      
     - name: Upload ZIP as Artifact
       uses: actions/upload-artifact@v2
       with:
-        name: My-Chrome-Tool-Set  # Simplified the name
-        path: ./My-Chrome-Tool-Set.zip  # Adjust the path accordingly
+        name: My-Chrome-Tool-Set  
+        path: ./My-Chrome-Tool-Set.zip 
