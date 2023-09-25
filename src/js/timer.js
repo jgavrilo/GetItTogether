@@ -28,7 +28,7 @@ function showInputContent(workTime, breakTime) {
 // Function to play alarm sound
 function playAlarm() {
     const selectedAlarm = localStorage.getItem('selectedAlarm') || 'alarm1.mp3';
-    alarmSound = new Audio(`../../assets/audio/alarms/${selectedAlarm}`);
+    alarmSound = new Audio(`../../assets/audio/alarms/${selectedAlarm}.mp3`);
     alarmSound.play();
   }  
 
