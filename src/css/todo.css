@@ -34,9 +34,9 @@ body {
     height: 100%;
 }
 
-
-
 .tab-button {
+    background-color: var(--secondary-color);
+    color: var(--primary-color);
     width: 100px;  
     cursor: pointer;
     text-align: center; 
@@ -47,6 +47,11 @@ body {
     max-width: 120px;  /* Set a maximum width */
 }
 
+/* Active tab button style */
+.tab-button.active {
+    color: var(--secondary-color);
+    background-color: var(--primary-color);
+}
 /* Buttons */
 button {
     padding: 10px;
