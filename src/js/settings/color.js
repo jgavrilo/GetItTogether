@@ -1,13 +1,13 @@
-// Predefined color palettes
+// SECTION - Predefined Color Palettes
 const palettes = {
     palette1: { primary: '#FFFFFF', secondary: '#0F0F0F', third: '#0F0F0F', fourth: '#FFFFFF' },
     palette2: { primary: '#0F0F0F', secondary: '#FFFFFF', third: '#FFFFFF', fourth: '#0F0F0F' },
     palette3: { primary: '#000000', secondary: '#654321', third: '#654321', fourth: '#000000' },
 };
 
-/**
- * Toggle between displaying preset palettes and custom color selectors.
- */
+// SECTION - Utility Functions
+
+// Toggle between displaying preset palettes and custom color selectors
 function toggleView() {
     const presetPalettes = document.getElementById('presetPalettes');
     const customColors = document.getElementById('customColors');
@@ -21,11 +21,7 @@ function toggleView() {
     }
 }
 
-/**
- * Update the color input fields based on the selected palette.
- *
- * @param {string} id - ID of the selected palette.
- */
+// Update the color input fields based on the selected palette
 function updatePaletteColors(id) {
     const selectedPalette = palettes[id];
     // Update the input fields with the colors from the selected palette
@@ -42,19 +38,24 @@ function updatePaletteColors(id) {
     updateColors();
 }
 
+// SECTION - DOMContentLoaded Event
+
 // Initialize when DOM is fully loaded
 document.addEventListener('DOMContentLoaded', function() {
     // Load saved or default colors from local storage
+    // Populate the color input fields
+    
     const primaryColor = localStorage.getItem('primaryColor') || palettes.palette1.primary;
     const secondaryColor = localStorage.getItem('secondaryColor') || palettes.palette1.secondary;
     const thirdColor = localStorage.getItem('thirdColor') || palettes.palette1.third;
     const fourthColor = localStorage.getItem('fourthColor') || palettes.palette1.fourth;
 
-    // Populate the color input fields with saved or default colors
     document.getElementById('primaryColor').value = primaryColor;
     document.getElementById('secondaryColor').value = secondaryColor;
     document.getElementById('thirdColor').value = thirdColor;
     document.getElementById('fourthColor').value = fourthColor;
+
+    // SECTION - Event Listeners
 
     // Add a submit event listener to the form
     document.getElementById('settingsForm').addEventListener('submit', function(event) {

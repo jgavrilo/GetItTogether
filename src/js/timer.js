@@ -1,38 +1,38 @@
-// Global variables
-let timerInterval; 
-let alarmSound; 
+// SECTION - Global Variables
+let timerInterval;
+let alarmSound;
 let isPaused = false;
 
-// Get references to elements
+// SECTION - DOM Elements
 const startButton = document.getElementById("startTimer");
 const startBreakButton = document.getElementById("startBreak");
 const repeatButton = document.getElementById("repeatTimer");
-
 const timerContent = document.getElementById("countdown");
 const inputContent = document.getElementById("inputSection");
 
-// Utility function to toggle display of elements
+// SECTION - Utility Functions
+
+// Toggle the display style of a DOM element
 function toggleDisplay(elementId, displayStyle) {
     document.getElementById(elementId).style.display = displayStyle;
 }
 
-// Function to show input content after the break timer
+// Show the input section after the break timer ends
 function showInputContent(workTime, breakTime) {
     toggleDisplay("countdown", "none");
     toggleDisplay("inputSection", "block");
-
     document.getElementById("workTime").value = workTime;
     document.getElementById("breakTime").value = breakTime;
 }
 
-// Function to play alarm sound
+// Play the selected alarm sound
 function playAlarm() {
-    const selectedAlarm = localStorage.getItem('selectedAlarm') || 'classic-alarm';
-    alarmSound = new Audio(`../../assets/audio/alarms/${selectedAlarm}.mp3`);
+    const selectedAlarm = localStorage.getItem('selectedAlarm') || 'classic-alarm.mp3';
+    alarmSound = new Audio(`../../assets/audio/alarms/${selectedAlarm}`);
     alarmSound.play();
-  }  
+}
 
-// Function to stop alarm sound
+// Stop the alarm sound
 function stopAlarm() {
     if (alarmSound) {
         alarmSound.pause();
@@ -40,7 +40,9 @@ function stopAlarm() {
     }
 }
 
-// Main timer logic
+// SECTION - Main Timer Logic
+
+// Start the timer with a given duration and optional callbacks
 function startTimer(duration, callback, isBreak = false, breakCallback = false) {
     clearInterval(timerInterval); // Clear any existing timer
     let totalTime = duration * 60; // Convert minutes to seconds
@@ -73,7 +75,9 @@ function startTimer(duration, callback, isBreak = false, breakCallback = false) 
     timerInterval = setInterval(updateTimerDisplay, 1000);
 }
 
-// Event listener for start button
+// SECTION - Event Listeners
+
+// Start the work timer
 startButton.addEventListener("click", function(event) {
     event.stopPropagation(); 
     const workTime = parseInt(document.getElementById("workTime").value) || 0;
@@ -101,6 +105,7 @@ startButton.addEventListener("click", function(event) {
     }, true);
 });
 
+// Stop the timer and reset
 document.getElementById("stopTimer").addEventListener("click", function() {
     clearInterval(timerInterval);
     stopAlarm();
@@ -110,18 +115,21 @@ document.getElementById("stopTimer").addEventListener("click", function() {
     isPaused = false; 
 });
 
+// Pause the timer
 document.getElementById("pauseTimer").addEventListener("click", function() {
     isPaused = true;
     toggleDisplay("pauseTimer", "none");
     toggleDisplay("resumeTimer", "block");
 });
 
+// Resume the paused timer
 document.getElementById("resumeTimer").addEventListener("click", function() {
     isPaused = false;
     toggleDisplay("pauseTimer", "block");
     toggleDisplay("resumeTimer", "none");
 });
 
+// Repeat the timer sequence
 repeatButton.addEventListener("click", function(event) {
     event.stopPropagation();
     stopAlarm(); 
@@ -139,6 +147,12 @@ repeatButton.addEventListener("click", function(event) {
         });
     }, true);
 });
+
+
+
+
+
+
 
 
 

@@ -1,4 +1,4 @@
-//SECTION - DOMContentLoaded
+// SECTION - DOMContentLoaded
 document.addEventListener('DOMContentLoaded', async function() {
     
     //  Load in existing list content from local storage
@@ -30,7 +30,98 @@ document.addEventListener('DOMContentLoaded', async function() {
 
 });
 
-//SECTION - Google Auth and Login Check Functions
+// SECTION - Event listeners
+// Add todo item by clicking the '+' button
+document.getElementById('addTodo').addEventListener('click', async function() {
+    const newTodo = document.getElementById('newTodo').value;
+    if (newTodo) {
+        const activeTab = document.querySelector('.tab-button.active');
+        if (activeTab) {
+            const tabId = activeTab.id;
+            if (tabId === 'local') {
+                // Add to local list
+                document.getElementById('todoList').appendChild(createTodoItem(newTodo, false));
+                saveTodoList();
+            } else {
+                // Add to Google Task list
+                const token = await getAuthToken();
+                await addTaskToGoogleTaskList(token, tabId, newTodo);
+                switchTab(taskListId);
+            }
+        }
+        document.getElementById('newTodo').value = '';
+        updateClearButtonVisibility();
+    }
+});
+
+// Add todo item by clicking enter while typing a new todo
+document.getElementById('newTodo').addEventListener('keydown', function(event) {
+    if (event.keyCode === 13) {
+        event.preventDefault();
+        document.getElementById('addTodo').click();
+    }
+});
+
+// Clicking the checkbox should toggle the line going through the text and completed marker
+document.getElementById('todoList').addEventListener('click', function(e) {
+    if (e.target && e.target.className === 'todo-checkbox') {
+        const textElement = e.target.nextSibling;
+        textElement.style.textDecoration = e.target.checked ? 'line-through' : 'none';
+        updateClearButtonVisibility();
+        saveTodoList();
+    }
+});
+
+// Removing and deleting completed todo's
+document.getElementById('clearCompleted').addEventListener('click', async function() {
+    const activeTab = document.querySelector('.tab-button.active');
+    if (activeTab) {
+        const tabId = activeTab.id;
+        if (tabId === 'local') {
+            // Clear completed tasks from local list
+            const items = document.querySelectorAll('#todoList li');
+            items.forEach(item => {
+                if (item.querySelector('.todo-checkbox').checked) {
+                    item.remove();
+                }
+            });
+            saveTodoList();
+        } else {
+            // Clear completed tasks from Google Task list
+            const token = await getAuthToken();
+            await clearCompletedGoogleTasks(token, tabId);
+        }
+    }
+    updateClearButtonVisibility();
+});
+
+// Delete a list from the google lists
+document.getElementById('deleteList').addEventListener('click', async function() {
+    const activeTab = document.querySelector('.tab-button.active');
+    if (activeTab) {
+        const tabId = activeTab.id;
+        
+        // Fetch the tasks in the Google Task list to check if it's empty
+        const token = await getAuthToken();
+        const tasks = await fetchGoogleTasks(token, tabId);
+        
+        const isConfirmed = window.confirm("Are you sure you want to delete this list?");
+        if (!isConfirmed) {
+        return;
+        }
+        
+
+        // Delete the Google Task list
+        const deleteSuccess = await deleteGoogleTaskList(token, tabId);
+        if (deleteSuccess) {
+            // Remove the tab from the DOM or refresh the list of tabs
+            activeTab.remove();
+        }
+        
+    }
+});
+
+// SECTION - Google Auth and Login Check Functions
 // Get Auth Token
 async function getAuthToken() {
     return new Promise((resolve, reject) => {
@@ -219,97 +310,6 @@ async function displayGoogleTaskLists() {
     // Initially show the local tab as active
     switchTab('local');
 }
-
-// SECTION - Event listeners
-// Add todo item by clicking the '+' button
-document.getElementById('addTodo').addEventListener('click', async function() {
-    const newTodo = document.getElementById('newTodo').value;
-    if (newTodo) {
-        const activeTab = document.querySelector('.tab-button.active');
-        if (activeTab) {
-            const tabId = activeTab.id;
-            if (tabId === 'local') {
-                // Add to local list
-                document.getElementById('todoList').appendChild(createTodoItem(newTodo, false));
-                saveTodoList();
-            } else {
-                // Add to Google Task list
-                const token = await getAuthToken();
-                await addTaskToGoogleTaskList(token, tabId, newTodo);
-                switchTab(taskListId);
-            }
-        }
-        document.getElementById('newTodo').value = '';
-        updateClearButtonVisibility();
-    }
-});
-
-// Add todo item by clicking enter while typing a new todo
-document.getElementById('newTodo').addEventListener('keydown', function(event) {
-    if (event.keyCode === 13) {
-        event.preventDefault();
-        document.getElementById('addTodo').click();
-    }
-});
-
-// Clicking the checkbox should toggle the line going through the text and completed marker
-document.getElementById('todoList').addEventListener('click', function(e) {
-    if (e.target && e.target.className === 'todo-checkbox') {
-        const textElement = e.target.nextSibling;
-        textElement.style.textDecoration = e.target.checked ? 'line-through' : 'none';
-        updateClearButtonVisibility();
-        saveTodoList();
-    }
-});
-
-// Removing and deleting completed todo's
-document.getElementById('clearCompleted').addEventListener('click', async function() {
-    const activeTab = document.querySelector('.tab-button.active');
-    if (activeTab) {
-        const tabId = activeTab.id;
-        if (tabId === 'local') {
-            // Clear completed tasks from local list
-            const items = document.querySelectorAll('#todoList li');
-            items.forEach(item => {
-                if (item.querySelector('.todo-checkbox').checked) {
-                    item.remove();
-                }
-            });
-            saveTodoList();
-        } else {
-            // Clear completed tasks from Google Task list
-            const token = await getAuthToken();
-            await clearCompletedGoogleTasks(token, tabId);
-        }
-    }
-    updateClearButtonVisibility();
-});
-
-// Delete a list from the google lists
-document.getElementById('deleteList').addEventListener('click', async function() {
-    const activeTab = document.querySelector('.tab-button.active');
-    if (activeTab) {
-        const tabId = activeTab.id;
-        
-        // Fetch the tasks in the Google Task list to check if it's empty
-        const token = await getAuthToken();
-        const tasks = await fetchGoogleTasks(token, tabId);
-        
-        const isConfirmed = window.confirm("Are you sure you want to delete this list?");
-        if (!isConfirmed) {
-        return;
-        }
-        
-
-        // Delete the Google Task list
-        const deleteSuccess = await deleteGoogleTaskList(token, tabId);
-        if (deleteSuccess) {
-            // Remove the tab from the DOM or refresh the list of tabs
-            activeTab.remove();
-        }
-        
-    }
-});
 
 // SECTION - Local list functions
 // Utility function to create a todo item

@@ -1,49 +1,48 @@
-// Object to keep track of window IDs
+// SECTION - Global Variables
 let windowIds = {};
 
-// Function to open a Chrome popup window and set its flags.
+// SECTION - Utility Functions
+
+// Open a Chrome popup window with specified dimensions and flags
 function openWindow(file, windowName, dimensions) {
     const fullUrl = chrome.runtime.getURL(file);
-  
+
     // Create a new popup window
     chrome.windows.create({ url: fullUrl, type: 'popup', width: dimensions.width, height: dimensions.height }, function(window) {
-        
-        console.log("Window created:", window);
-
         // Store the window ID
         windowIds[windowName] = window.id;
-        
-        // Store the window ID in local storage
+        // Persist the window ID in local storage
         localStorage.setItem(windowName, window.id.toString());
     });
 }
 
-// Function to handle window-opening logic
+// Handle the logic for opening or focusing a window
 function handleWindowOpen(windowName, buttonId, file, dimensions) {
     document.getElementById(buttonId).addEventListener('click', function() {
-        // Check if the window is already open using local storage
+        // Retrieve the stored window ID from local storage
         const storedId = localStorage.getItem(windowName);
         console.log("Stored window ID:", storedId);
 
         if (storedId) {
-            // If the window is already open, bring it to the front
+            // If window exists, focus it; otherwise, create a new one
             chrome.windows.get(parseInt(storedId), {}, function(window) {
                 if (chrome.runtime.lastError) {
                     console.error("Error occurred:", chrome.runtime.lastError.message);
-                    // Open a new window if the stored one doesn't exist
                     openWindow(file, windowName, dimensions);
                 } else {
                     chrome.windows.update(parseInt(storedId), { focused: true });
                 }
             });
         } else {
-            // Otherwise, open a new window
+            // Open a new window
             openWindow(file, windowName, dimensions);
         }
     });
 }
 
-// Attach an event listener to remove the window ID when the window is closed
+// SECTION - Chrome Event Listeners
+
+// Remove the window ID from storage when the window is closed
 chrome.windows.onRemoved.addListener(function(removedId) {
     for (const [name, id] of Object.entries(windowIds)) {
         if (id === removedId) {
@@ -54,7 +53,8 @@ chrome.windows.onRemoved.addListener(function(removedId) {
     }
 });
 
-// Configuration for different window types
+// SECTION - Window Configurations
+
 const timerWindowName = 'Timer';
 const timerButtonId = 'openTimer';
 const timerFile = 'src/html/timer.html';
@@ -70,7 +70,9 @@ const settingsButtonId = 'openSettings';
 const settingsFile = 'src/html/settings.html';
 const settingsWindowDimensions = { width: 400, height: 300 };
 
-// Attach event listeners for each window type
+// SECTION - Event Listener Attachments
+
+// Attach event listeners to handle window opening for each type
 handleWindowOpen(timerWindowName, timerButtonId, timerFile, timerWindowDimensions);
 handleWindowOpen(todoWindowName, todoButtonId, todoFile, todoWindowDimensions);
 handleWindowOpen(settingsWindowName, settingsButtonId, settingsFile, settingsWindowDimensions);

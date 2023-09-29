@@ -108,7 +108,6 @@ label {
 
 input[type="text"] {
     padding: 10px;
-    border: 1px solid #ddd;
     border-radius: 5px;
     font-size: 14px;
     width: calc(100% - 20px);
