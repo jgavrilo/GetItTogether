@@ -73,7 +73,7 @@ body {
     border: 1px solid #ccc;
 }
 
-button#loginButton, button#backToPalettes, button#submit, button#testButton {
+button#backToPalettes, button#submit, button#testButton {
     padding: 10px;
     box-sizing: border-box;
     padding: 10px;
@@ -100,3 +100,11 @@ button#loginButton, button#backToPalettes, button#submit, button#testButton {
     width: 25px;
     height: 25px;
 }
+
+#googleAccountButton, #googleAccountLogoutButton {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    padding: 10px;
+  }
+  
