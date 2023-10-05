@@ -134,9 +134,8 @@ async function updateGoogleAccountButton() {
     loginButton.style.display = 'none'; // Hide Login Button
     logoutButton.style.display = 'block'; // Show Logout Button
   } else {
-    emailDisplay.textContent = 'Loggin to connect to out google account';
+    emailDisplay.textContent = 'Login to connect to out google account';
     loginButton.style.display = 'block'; // Show Login Button
-    loginButton.textContent = 'Log In';
     loginButton.onclick = initiateGoogleLogin; // Restore original onclick event
     logoutButton.style.display = 'none'; // Hide Logout Button
   }

@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     
     //  Load in existing list content from local storage
     //  Update the clear button based on checked off tasks
-    loadTodoList();
+    await loadTodoList();
     updateClearButtonVisibility();
 
     //  Check if the user is logged in to Google and wait for the response
@@ -118,6 +118,14 @@ document.getElementById('deleteList').addEventListener('click', async function()
             activeTab.remove();
         }
         
+    }
+});
+
+// Event Listener to make sure tabs change when login status changes
+window.addEventListener('storage', async function(event) {
+    if (event.key === 'isLoggedIn') {
+        // Reload the todo list based on the new login status
+        await loadTodoList();
     }
 });
 
@@ -400,14 +408,34 @@ function saveTodoList() {
     updateClearButtonVisibility();
 }
 
-// Function to load the todo list from local storage
-function loadTodoList() {
-    const savedTodos = JSON.parse(localStorage.getItem('todoList') || '[]');
+async function loadTodoList() {
+    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
     const todoList = document.getElementById('todoList');
+    
+    todoList.innerHTML = '';
+
+    if (isLoggedIn) {
+        await displayGoogleTaskLists();
+    } else {
+        hideGoogleTabs();
+        switchTab('local');
+    }
+
+    // Load todo list from local storage
+    const savedTodos = JSON.parse(localStorage.getItem('todoList') || '[]');
     savedTodos.forEach(todo => {
         todoList.appendChild(createTodoItem(todo.text, todo.isChecked));
     });
 }
+
+function hideGoogleTabs() {
+    const tabs = document.querySelectorAll('.tab-button');
+    tabs.forEach(tab => {
+        if (tab.id !== 'local') {
+            tab.style.display = 'none';
+        }
+    });
+} 
 
 // Function to update the visibility of the clear completed button
 async function updateClearButtonVisibility() {
