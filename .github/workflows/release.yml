@@ -30,7 +30,7 @@ jobs:
       with:
         tag_name: ${{ steps.manifest.outputs.version }}
         release_name: Release ${{ steps.manifest.outputs.version }}
-        body: Logout now possible, login status now links with open todo list.
+        body: App name and icon update! Also fixed a google todo list glitch.
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 

@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 });
 
 // SECTION - Event listeners
-// Add todo item by clicking the '+' button
+// Add todo item by clicking the 'Add' button
 document.getElementById('addTodo').addEventListener('click', async function() {
     const newTodo = document.getElementById('newTodo').value;
     if (newTodo) {
@@ -46,7 +46,7 @@ document.getElementById('addTodo').addEventListener('click', async function() {
                 // Add to Google Task list
                 const token = await getAuthToken();
                 await addTaskToGoogleTaskList(token, tabId, newTodo);
-                switchTab(taskListId);
+                switchTab(tabId);
             }
         }
         document.getElementById('newTodo').value = '';

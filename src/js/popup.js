@@ -27,8 +27,8 @@ function handleWindowOpen(windowName, buttonId, file, dimensions) {
             // If window exists, focus it; otherwise, create a new one
             chrome.windows.get(parseInt(storedId), {}, function(window) {
                 if (chrome.runtime.lastError) {
-                    console.error("Error occurred:", chrome.runtime.lastError.message);
-                    openWindow(file, windowName, dimensions);
+                    localStorage.removeItem(windowName); // Remove stale ID
+                    openWindow(file, windowName, dimensions); // Open a new window
                 } else {
                     chrome.windows.update(parseInt(storedId), { focused: true });
                 }
