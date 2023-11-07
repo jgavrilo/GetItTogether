@@ -1,4 +1,5 @@
 // SECTION - Google Auth and Login Check Functions
+
 // Get Auth Token
 async function getAuthToken() {
     return new Promise((resolve, reject) => {
@@ -76,15 +77,6 @@ async function createNewGoogleTaskList(token, listName) {
     } catch (error) {
         console.error(`An error occurred: ${error}`);
     }
-
-    // Event listener for the "Add New List" button
-    document.getElementById('addNewListTab').addEventListener('click', async function() {
-        const listName = prompt("Enter the name of the new list:");
-        if (listName) {
-            const token = await getAuthToken();
-            await createNewGoogleTaskList(token, listName);
-        }
-    });
 
 }
 

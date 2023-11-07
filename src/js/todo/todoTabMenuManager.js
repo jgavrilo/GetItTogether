@@ -54,6 +54,15 @@ async function displayGoogleTaskLists() {
     switchTab('local');
 }
 
+// Event listener for the "Add New List" button
+document.getElementById('addNewListTab').addEventListener('click', async function() {
+    const listName = prompt("Enter the name of the new list:");
+    if (listName) {
+        const token = await getAuthToken();
+        await createNewGoogleTaskList(token, listName);
+    }
+});
+
 // SECTION - Tabs
 // Function to switch tabs
 async function switchTab(tabId) {
@@ -176,3 +185,11 @@ function hideGoogleTabs() {
         }
     });
 } 
+
+// Event Listener to make sure tabs change when login status changes
+window.addEventListener('storage', async function(event) {
+    if (event.key === 'isLoggedIn') {
+        // Reload the todo list based on the new login status
+        await loadTodoList();
+    }
+});

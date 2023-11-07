@@ -121,14 +121,6 @@ document.getElementById('deleteList').addEventListener('click', async function()
     }
 });
 
-// Event Listener to make sure tabs change when login status changes
-window.addEventListener('storage', async function(event) {
-    if (event.key === 'isLoggedIn') {
-        // Reload the todo list based on the new login status
-        await loadTodoList();
-    }
-});
-
 // SECTION - Local list functions
 // Utility function to create a todo item
 function createTodoItem(text, isChecked) {
@@ -197,8 +189,6 @@ function createTodoItem(text, isChecked) {
                 saveTodoList();
             }
         }
-
-
     });    
     
     return li;
