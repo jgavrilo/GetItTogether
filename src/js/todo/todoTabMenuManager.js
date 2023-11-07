@@ -1,3 +1,22 @@
+// SECTION - DOMContentLoaded
+document.addEventListener('DOMContentLoaded', async function() {
+
+    //  When the window first opens, local must be selected
+    switchTab('local');
+
+    //  We want the tabs to stay in a contained space regardless of the amount of tabs
+    //  We apply a scroll feature for when there are too many tabs to fit the width
+    const tabsWrapper = document.querySelector('.tabs-wrapper');
+    tabsWrapper.addEventListener('wheel', function(event) {
+        // Prevent the default scrolling behavior
+        event.preventDefault();
+
+        // Scroll horizontally based on the vertical scroll amount
+        tabsWrapper.scrollLeft += event.deltaY;
+    });
+
+});
+
 // Function to display Google Task Lists as tabs
 async function displayGoogleTaskLists() {
     const token = await getAuthToken();
@@ -50,8 +69,6 @@ async function displayGoogleTaskLists() {
     });
     tabs.appendChild(addButton);
 
-    // Initially show the local tab as active
-    switchTab('local');
 }
 
 // Event listener for the "Add New List" button

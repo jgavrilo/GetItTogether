@@ -6,28 +6,6 @@ document.addEventListener('DOMContentLoaded', async function() {
     await loadTodoList();
     updateClearButtonVisibility();
 
-    //  Check if the user is logged in to Google and wait for the response
-    const isLoggedIn = await checkLoginStatusWithoutLogin();
-
-    //  If they are logged in display any task lists that is stored in Google
-    if (isLoggedIn) {
-        await displayGoogleTaskLists();
-    }
-
-    //  When the window first opens, local must be selected
-    switchTab('local');
-
-    //  We want the tabs to stay in a contained space regardless of the amount of tabs
-    //  We apply a scroll feature for when there are too many tabs to fit the width
-    const tabsWrapper = document.querySelector('.tabs-wrapper');
-    tabsWrapper.addEventListener('wheel', function(event) {
-        // Prevent the default scrolling behavior
-        event.preventDefault();
-
-        // Scroll horizontally based on the vertical scroll amount
-        tabsWrapper.scrollLeft += event.deltaY;
-    });
-
 });
 
 // SECTION - Event listeners
@@ -209,7 +187,7 @@ function saveTodoList() {
 }
 
 async function loadTodoList() {
-    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    const isLoggedIn = await checkLoginStatusWithoutLogin();;
     const todoList = document.getElementById('todoList');
     
     todoList.innerHTML = '';

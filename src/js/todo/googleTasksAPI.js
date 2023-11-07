@@ -73,7 +73,7 @@ async function createNewGoogleTaskList(token, listName) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
         // Refresh the task lists to show the new list
-        displayGoogleTaskLists();
+        await displayGoogleTaskLists();
     } catch (error) {
         console.error(`An error occurred: ${error}`);
     }
