@@ -37,7 +37,7 @@ async function displayGoogleTaskLists() {
     tabs.appendChild(localTab);
 
 
-    googleTaskLists.forEach(taskList => {
+    googleTaskLists.forEach(async (taskList) => {
         const button = document.createElement('button');
         button.className = 'tab-button';
         button.id = taskList.id;
@@ -52,8 +52,35 @@ async function displayGoogleTaskLists() {
         ul.id = `${taskList.id}-content`;
         ul.className = 'tab-content';
         document.getElementById('inputSection').appendChild(ul);
-        
+    
+        // Fetch tasks for this task list
+        const token = await getAuthToken(); // Ensure you have this function to get the auth token
+        const tasks = await fetchGoogleTasks(token, taskList.id);
+    
+        // Create list items for each task
+        tasks.forEach(task => {
+            const li = document.createElement('li');
+            li.className = 'task-item'; // Add if you have a class for styling list items
+    
+            // Create the checkbox
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.className = 'todo-checkbox'; // This class should have the right margin styling in your CSS
+            checkbox.checked = task.status === 'completed'; // Check the box if the task is completed
+    
+            // Append the checkbox to the list item
+            li.appendChild(checkbox);
+    
+            // Add the task title as text node
+            const text = document.createTextNode(task.title);
+            li.appendChild(text);
+    
+            // Append the list item to the ul
+            ul.appendChild(li);
+        });
     });
+    
+    
   
     // Add "+" button at the end
     const addButton = document.createElement('button');
@@ -78,8 +105,6 @@ async function displayGoogleTaskLists() {
         }
     });
 }
-
-
 
 // SECTION - Tabs
 // Function to switch tabs

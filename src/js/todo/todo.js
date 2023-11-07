@@ -196,7 +196,6 @@ async function loadTodoList() {
         await displayGoogleTaskLists();
     } else {
         hideGoogleTabs();
-        switchTab('local');
     }
 
     // Load todo list from local storage
@@ -204,6 +203,9 @@ async function loadTodoList() {
     savedTodos.forEach(todo => {
         todoList.appendChild(createTodoItem(todo.text, todo.isChecked));
     });
+
+    switchTab('local');
+
 }
 
 // Function to update the visibility of the clear completed button
