@@ -46,7 +46,7 @@ async function displayGoogleTaskLists() {
             switchTab(taskList.id);
         });
         tabs.appendChild(button);
-
+        
         // Create a ul element for this Google Task List
         const ul = document.createElement('ul');
         ul.id = `${taskList.id}-content`;
@@ -69,16 +69,17 @@ async function displayGoogleTaskLists() {
     });
     tabs.appendChild(addButton);
 
+    // Event listener for the "Add New List" button
+    document.getElementById('addNewListTab').addEventListener('click', async function() {
+        const listName = prompt("Enter the name of the new list:");
+        if (listName) {
+            const token = await getAuthToken();
+            await createNewGoogleTaskList(token, listName);
+        }
+    });
 }
 
-// Event listener for the "Add New List" button
-document.getElementById('addNewListTab').addEventListener('click', async function() {
-    const listName = prompt("Enter the name of the new list:");
-    if (listName) {
-        const token = await getAuthToken();
-        await createNewGoogleTaskList(token, listName);
-    }
-});
+
 
 // SECTION - Tabs
 // Function to switch tabs
