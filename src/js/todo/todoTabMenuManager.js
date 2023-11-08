@@ -48,39 +48,12 @@ async function displayGoogleTaskLists() {
         tabs.appendChild(button);
         
         // Create a ul element for this Google Task List
-        const ul = document.createElement('ul');
-        ul.id = `${taskList.id}-content`;
-        ul.className = 'tab-content';
-        document.getElementById('inputSection').appendChild(ul);
+        const div = document.createElement('div');
+        div.id = `${taskList.id}-content`;
+        div.className = 'tab-content';
+        document.getElementById('inputSection').appendChild(div);
     
-        // Fetch tasks for this task list
-        const token = await getAuthToken(); // Ensure you have this function to get the auth token
-        const tasks = await fetchGoogleTasks(token, taskList.id);
-    
-        // Create list items for each task
-        tasks.forEach(task => {
-            const li = document.createElement('li');
-            li.className = 'task-item'; // Add if you have a class for styling list items
-    
-            // Create the checkbox
-            const checkbox = document.createElement('input');
-            checkbox.type = 'checkbox';
-            checkbox.className = 'todo-checkbox'; // This class should have the right margin styling in your CSS
-            checkbox.checked = task.status === 'completed'; // Check the box if the task is completed
-    
-            // Append the checkbox to the list item
-            li.appendChild(checkbox);
-    
-            // Add the task title as text node
-            const text = document.createTextNode(task.title);
-            li.appendChild(text);
-    
-            // Append the list item to the ul
-            ul.appendChild(li);
-        });
     });
-    
-    
   
     // Add "+" button at the end
     const addButton = document.createElement('button');
@@ -153,36 +126,49 @@ async function switchTab(tabId) {
         const taskListElement = document.getElementById(`${tabId}-content`);
         if (taskListElement) {
             taskListElement.innerHTML = '';
-            taskListElement.style.width = '100%';
         }
+
+        const ul = document.createElement('ul');
+        ul.id = 'todoList';
 
         // Append new tasks
         tasks.forEach(task => {
+
+
             const li = document.createElement('li');
+
+            const container = document.createElement('div');
+            container.className = 'todo-container';
+            container.style.display = 'flex';
+
             const checkbox = document.createElement('input');
             checkbox.type = 'checkbox';
-            checkbox.className = 'google-task-checkbox';
+            checkbox.className = 'todo-checkbox';
             checkbox.checked = task.status === 'completed';
-            checkbox.dataset.taskId = task.id;  // Store the task ID
-            li.appendChild(checkbox);
+            checkbox.dataset.taskId = task.id;
+            container.appendChild(checkbox);
 
             const span = document.createElement('span');
-            span.className = 'google-task-text';
+            span.className = 'todo-text';
             span.textContent = task.title;
             span.style.textDecoration = task.status === 'completed' ? 'line-through' : 'none';
-            li.appendChild(span);
+            container.appendChild(span);
 
-            // Add double-click event to the span
+            li.appendChild(container);
+            ul.appendChild(li);
+
+            // Add click event to the span
             span.addEventListener('click', function() {
                 // Create an input element
                 const input = document.createElement('input');
                 input.type = 'text';
                 input.value = span.textContent;
-                input.className = 'google-task-edit';
+                input.className = 'todo-edit';
                 input.style.display = 'inline-block';
                 
-                // Replace the span with the input element within the li
-                li.replaceChild(input, span);
+                // Replace the span with the input element within the container
+                const container = span.parentNode;
+                container.replaceChild(input, span);
 
                 // Focus the input element
                 input.focus();
@@ -199,13 +185,12 @@ async function switchTab(tabId) {
                 });
             });
 
-            taskListElement.appendChild(li);
+            taskListElement.appendChild(ul);
         });
-
-
+        
         // Add event listener for checkboxes
         taskListElement.addEventListener('click', async function(e) {
-            if (e.target && e.target.className === 'google-task-checkbox') {
+            if (e.target && e.target.className === 'todo-checkbox') {
                 const textElement = e.target.nextSibling;
                 textElement.style.textDecoration = e.target.checked ? 'line-through' : 'none';
                 const taskId = e.target.dataset.taskId;  // Retrieve the task ID

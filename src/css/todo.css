@@ -70,6 +70,10 @@ ul {
     padding-left: 0;
 }
 
+li {
+    list-style-type: none;
+}
+
 /* Input Section */
 #inputSection {
     display: flex;
@@ -122,7 +126,27 @@ h2 {
 }
 
 .todo-checkbox {
+    appearance: none; /* to remove default checkbox appearance */
+    -webkit-appearance: none; /* for Safari */
     margin-right: 10px;
+    position: relative; /* to position the pseudo-elements */
+    width: 18px; /* desired width */
+    height: 18px; /* desired height */
+    border: 2px solid var(--secondary-color); /* border color */
+    border-radius: 50%; /* make it circular */
+    cursor: pointer; /* change cursor to pointer when hovering over the checkbox */
+    bottom: 2px;
+}
+
+/* When the checkbox is checked, use the ::after pseudo-element to create the filled circle */
+.todo-checkbox:checked::after {
+    content: '\2713';
+    color: var(--primary-color);
+    position: absolute;
+    width: 16px; /* slightly smaller than the checkbox itself */
+    height: 16px; /* slightly smaller than the checkbox itself */
+    background: var(--secondary-color); /* color of the filled circle */
+    border-radius: 50%; /* make it circular */
 }
 
 #buttonSection {
