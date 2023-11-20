@@ -125,11 +125,17 @@ h2 {
     margin-bottom: 20px;
 }
 
+.todo-container {
+    display: flex;
+    align-items: center; 
+}
+
 .todo-checkbox {
     appearance: none; /* to remove default checkbox appearance */
     -webkit-appearance: none; /* for Safari */
     margin-right: 10px;
-    position: relative; /* to position the pseudo-elements */
+    flex-shrink: 0;
+    position: relative;
     width: 18px; /* desired width */
     height: 18px; /* desired height */
     border: 2px solid var(--secondary-color); /* border color */
@@ -148,6 +154,14 @@ h2 {
     background: var(--secondary-color); /* color of the filled circle */
     border-radius: 50%; /* make it circular */
 }
+
+.todo-text {
+    /* Your existing styles */
+    overflow: hidden; /* Hides overflow */
+    text-overflow: ellipsis; /* Adds an ellipsis to truncated text */
+    flex-grow: 1; /* Allows the text to grow if there's extra space */
+}
+
 
 #buttonSection {
     display: flex;

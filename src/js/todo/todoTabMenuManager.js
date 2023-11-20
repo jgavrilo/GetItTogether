@@ -152,6 +152,9 @@ async function switchTab(tabId) {
             span.className = 'todo-text';
             span.textContent = task.title;
             span.style.textDecoration = task.status === 'completed' ? 'line-through' : 'none';
+            span.style.whiteSpace = 'nowrap';
+            span.style.overflow = 'hidden';
+            span.style.textOverflow = 'ellipsis';
             container.appendChild(span);
 
             li.appendChild(container);
