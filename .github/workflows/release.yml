@@ -30,7 +30,7 @@ jobs:
       with:
         tag_name: ${{ steps.manifest.outputs.version }}
         release_name: Release ${{ steps.manifest.outputs.version }}
-        body: App name and icon update! Also fixed a google todo list glitch.
+        body: Fixed bullet point wrapping glitch
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
