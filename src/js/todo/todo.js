@@ -191,7 +191,7 @@ async function loadTodoList() {
     todoList.innerHTML = '';
 
     if (isLoggedIn) {
-        await displayGoogleTaskLists();
+        await displayGoogleTabs();
     } else {
         hideGoogleTabs();
     }

@@ -44,9 +44,11 @@ async function fetchGoogleTasks(token, taskListId) {
     try {
         const response = await fetch(`https://tasks.googleapis.com/tasks/v1/lists/${taskListId}/tasks`, {
             headers: {
-                'Authorization': `Bearer ${token}`
+                'Authorization': `Bearer ${token}`,
+                'Cache-Control': 'no-cache'
             }
         });
+
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -73,7 +75,7 @@ async function createNewGoogleTaskList(token, listName) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
         // Refresh the task lists to show the new list
-        await displayGoogleTaskLists();
+        await displayGoogleTabs();
     } catch (error) {
         console.error(`An error occurred: ${error}`);
     }
@@ -94,6 +96,8 @@ async function addTaskToGoogleTaskList(token, taskListId, taskTitle) {
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
+        // Refresh the task list to remove the completed tasks
+        await switchTab(taskListId);
     } catch (error) {
         console.error(`An error occurred: ${error}`);
     }
@@ -122,6 +126,25 @@ async function updateGoogleTaskStatus(token, taskListId, taskId, isCompleted) {
     }
 }
 
+// Function to delete a task
+async function deleteGoogleTask(token, taskListId, taskId) {
+    try {
+        const response = await fetch(`https://tasks.googleapis.com/tasks/v1/lists/${taskListId}/tasks/${taskId}`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        // Refresh the task list to remove the completed tasks
+        await switchTab(taskListId);
+    } catch (error) {
+        console.error(`An error occurred: ${error}`);
+    }
+}
+
 // Function to update the task title
 async function updateGoogleTaskTitle(token, taskListId, taskId, newTitle) {
     try {
@@ -136,25 +159,12 @@ async function updateGoogleTaskTitle(token, taskListId, taskId, newTitle) {
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
+        await switchTab(taskListId);
+
     } catch (error) {
         console.error(`An error occurred: ${error}`);
     }
 }
-
-// Function to save changes done to the task
-async function saveGoogleTaskChanges(input, span, li, taskListId, taskId) {
-    if (input.value.trim() === '') {
-        li.remove();
-    } else {
-        span.textContent = input.value;
-        input.parentNode.replaceChild(span, input);
-
-        // Update the task title in Google Tasks
-        const token = await getAuthToken();
-        await updateGoogleTaskTitle(token, taskListId, taskId, input.value);
-    }
-}
-
 
 // Function to clear and delete any tasks that are marked as completed
 async function clearCompletedGoogleTasks(token, taskListId) {
@@ -170,7 +180,7 @@ async function clearCompletedGoogleTasks(token, taskListId) {
             });
         }
         // Refresh the task list to remove the completed tasks
-        switchTab(taskListId);
+        await switchTab(taskListId);
     } catch (error) {
         console.error(`An error occurred: ${error}`);
     }

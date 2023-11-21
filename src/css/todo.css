@@ -59,7 +59,7 @@ button {
 }
 
 /* Todo List and Input Section */
-#todoList, #inputSection {
+#todoList, #inputSection, #google-todoList {
     border-radius: 10px;
     width: 90vw;
     font-size: 18px;

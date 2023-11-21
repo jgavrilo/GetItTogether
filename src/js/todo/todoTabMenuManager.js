@@ -19,10 +19,10 @@ document.addEventListener('DOMContentLoaded', async function() {
 });
 
 // Function to display Google Task Lists as tabs
-async function displayGoogleTaskLists() {
-    const token = await getAuthToken();
-    const googleTaskLists = await fetchGoogleTaskLists(token);
-    const tabs = document.querySelector('.tabs');
+async function displayGoogleTabs() {
+    var token = await getAuthToken();
+    var googleTaskLists = await fetchGoogleTaskLists(token);
+    var tabs = document.querySelector('.tabs');
   
     // Clear existing tabs
     tabs.innerHTML = '';
@@ -69,15 +69,6 @@ async function displayGoogleTaskLists() {
         }
     });
     tabs.appendChild(addButton);
-
-    // Event listener for the "Add New List" button
-    document.getElementById('addNewListTab').addEventListener('click', async function() {
-        const listName = prompt("Enter the name of the new list:");
-        if (listName) {
-            const token = await getAuthToken();
-            await createNewGoogleTaskList(token, listName);
-        }
-    });
 }
 
 // SECTION - Tabs
@@ -95,10 +86,12 @@ async function switchTab(tabId) {
     const tabButton = document.getElementById(tabId);
     const tabContent = document.getElementById(`${tabId}-content`);
 
+    // Highlight the active tab
     if (tabButton) {
         tabButton.classList.add('active');
     }
 
+    // Show delete list button for non local tabs
     const deleteListButton = document.getElementById('deleteList');
     if (deleteListButton) {
       if (tabId === 'local') {
@@ -120,9 +113,10 @@ async function switchTab(tabId) {
     
     if (tabId !== 'local') {
         // Fetch and display tasks for this Google Task List
-        const token = await getAuthToken();
-        const tasks = await fetchGoogleTasks(token, tabId);
+        var token = await getAuthToken();
+        var tasks = await fetchGoogleTasks(token, tabId);
         
+        console.log(tasks);
         // Clear previous tasks
         const taskListElement = document.getElementById(`${tabId}-content`);
         if (taskListElement) {
@@ -130,7 +124,7 @@ async function switchTab(tabId) {
         }
 
         const ul = document.createElement('ul');
-        ul.id = 'todoList';
+        ul.id = 'google-todoList';
 
         // Append new tasks
         tasks.forEach(task => {
@@ -153,7 +147,7 @@ async function switchTab(tabId) {
             span.className = 'todo-text';
             span.textContent = task.title;
             span.style.textDecoration = task.status === 'completed' ? 'line-through' : 'none';
-            span.style.whiteSpace = 'nowrap';
+            span.style.whiteSpace = 'wrap';
             span.style.overflow = 'hidden';
             span.style.textOverflow = 'ellipsis';
             container.appendChild(span);
@@ -171,7 +165,6 @@ async function switchTab(tabId) {
                 input.style.display = 'inline-block';
                 
                 // Replace the span with the input element within the container
-                const container = span.parentNode;
                 container.replaceChild(input, span);
 
                 // Focus the input element
@@ -180,15 +173,29 @@ async function switchTab(tabId) {
                 // Listen for 'Enter' key or loss of focus to save changes
                 input.addEventListener('keydown', async function(event) {
                     if (event.keyCode === 13) {
-                        await saveGoogleTaskChanges(input, span, li, tabId, task.id);
+                        if (input.value.trim() === '') {
+                            li.remove();
+                            token = await getAuthToken();
+                            // Delete the task from Google Tasks
+                            await deleteGoogleTask(token, tabId, task.id);
+                        } else {
+                            span.textContent = input.value;
+                            container.replaceChild(span, input);
+
+                            token = await getAuthToken();
+                            // Update the task title in Google Tasks
+                            await updateGoogleTaskTitle(token, tabId, task.id, span.textContent);
+                        }
+                        
                     }
-                });
+                    
+                });         
 
             });
 
             taskListElement.appendChild(ul);
         });
-        
+
         // Add event listener for checkboxes
         taskListElement.addEventListener('click', async function(e) {
             if (e.target && e.target.className === 'todo-checkbox') {
