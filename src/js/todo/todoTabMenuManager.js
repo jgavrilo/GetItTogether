@@ -1,8 +1,10 @@
+const tabId = 'local';
+
 // SECTION - DOMContentLoaded
 document.addEventListener('DOMContentLoaded', async function() {
 
     //  When the window first opens, local must be selected
-    switchTab('local');
+    switchTab(tabId);
 
     //  We want the tabs to stay in a contained space regardless of the amount of tabs
     //  We apply a scroll feature for when there are too many tabs to fit the width
@@ -14,7 +16,6 @@ document.addEventListener('DOMContentLoaded', async function() {
         // Scroll horizontally based on the vertical scroll amount
         tabsWrapper.scrollLeft += event.deltaY;
     });
-
 });
 
 // Function to display Google Task Lists as tabs
@@ -183,9 +184,6 @@ async function switchTab(tabId) {
                     }
                 });
 
-                input.addEventListener('blur', async function() {
-                    await saveGoogleTaskChanges(input, span, li, tabId, task.id);
-                });
             });
 
             taskListElement.appendChild(ul);

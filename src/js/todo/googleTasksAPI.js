@@ -147,13 +147,14 @@ async function saveGoogleTaskChanges(input, span, li, taskListId, taskId) {
         li.remove();
     } else {
         span.textContent = input.value;
-        li.replaceChild(span, input);
+        input.parentNode.replaceChild(span, input);
 
         // Update the task title in Google Tasks
         const token = await getAuthToken();
         await updateGoogleTaskTitle(token, taskListId, taskId, input.value);
     }
 }
+
 
 // Function to clear and delete any tasks that are marked as completed
 async function clearCompletedGoogleTasks(token, taskListId) {

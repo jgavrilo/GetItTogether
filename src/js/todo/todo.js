@@ -148,9 +148,7 @@ function createTodoItem(text, isChecked) {
                 saveChanges();
             }
         });
-    
-        input.addEventListener('blur', saveChanges);
-    
+        
         // Function to save changes and revert back to span
         function saveChanges() {
             if (input.value.trim() === '') {
