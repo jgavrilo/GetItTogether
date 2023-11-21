@@ -70,9 +70,15 @@ const settingsButtonId = 'openSettings';
 const settingsFile = 'src/html/settings.html';
 const settingsWindowDimensions = { width: 400, height: 300 };
 
+const spotifyWindowName = 'SpotifyPlayer';
+const spotifyButtonId = 'openSpotify';
+const spotifyFile = 'src/html/spotify.html';
+const spotifyWindowDimensions = { width: 320, height: 450 };
+
 // SECTION - Event Listener Attachments
 
 // Attach event listeners to handle window opening for each type
 handleWindowOpen(timerWindowName, timerButtonId, timerFile, timerWindowDimensions);
 handleWindowOpen(todoWindowName, todoButtonId, todoFile, todoWindowDimensions);
 handleWindowOpen(settingsWindowName, settingsButtonId, settingsFile, settingsWindowDimensions);
+handleWindowOpen(spotifyWindowName, spotifyButtonId, spotifyFile, spotifyWindowDimensions);
