@@ -30,7 +30,7 @@ jobs:
       with:
         tag_name: ${{ steps.manifest.outputs.version }}
         release_name: Release ${{ steps.manifest.outputs.version }}
-        body: Fixed more todo list glitches, added spotify player
+        body: Lists now auto update while window is open
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 

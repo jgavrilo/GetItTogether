@@ -1,4 +1,4 @@
-const tabId = 'local';
+var tabId = 'local';
 
 // SECTION - DOMContentLoaded
 document.addEventListener('DOMContentLoaded', async function() {
@@ -33,10 +33,12 @@ async function displayGoogleTabs() {
     localTab.className = 'tab-button';
     localTab.textContent = 'Local';
     localTab.addEventListener('click', function() {
+        tabId = 'local';
         switchTab('local');
     });
     tabs.appendChild(localTab);
 
+    console.log(googleTaskLists);
 
     googleTaskLists.forEach(async (taskList) => {
         const button = document.createElement('button');
@@ -44,6 +46,7 @@ async function displayGoogleTabs() {
         button.id = taskList.id;
         button.textContent = taskList.title;
         button.addEventListener('click', function() {
+            tabId = taskList.id;
             switchTab(taskList.id);
         });
         tabs.appendChild(button);
@@ -74,6 +77,8 @@ async function displayGoogleTabs() {
 // SECTION - Tabs
 // Function to switch tabs
 async function switchTab(tabId) {
+    console.debug(tabId);
+    
     // Remove active class from all tab buttons
     const allTabButtons = document.querySelectorAll('.tab-button');
     allTabButtons.forEach(el => el.classList.remove('active'));
@@ -115,8 +120,8 @@ async function switchTab(tabId) {
         // Fetch and display tasks for this Google Task List
         var token = await getAuthToken();
         var tasks = await fetchGoogleTasks(token, tabId);
-        
-        console.log(tasks);
+
+        console.debug("Come back here to get the universal structure for tasks")
         // Clear previous tasks
         const taskListElement = document.getElementById(`${tabId}-content`);
         if (taskListElement) {
@@ -128,7 +133,6 @@ async function switchTab(tabId) {
 
         // Append new tasks
         tasks.forEach(task => {
-
 
             const li = document.createElement('li');
 
@@ -229,3 +233,7 @@ window.addEventListener('storage', async function(event) {
         await loadTodoList();
     }
 });
+
+setInterval(() => {
+    switchTab(tabId); 
+}, 5000);
