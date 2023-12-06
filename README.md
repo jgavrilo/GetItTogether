@@ -19,7 +19,7 @@ This Chrome extension provides a set of tools to enhance your productivity. It i
 
 ### From Chrome Web Store
 
-You can also install this extension directly from the [Chrome Web Store]([https://chrome.google.com/webstore/detail/GetItTogether](https://chromewebstore.google.com/detail/getittogether/ojfhpccogblegeiacmljgecdcmadecgg?hl=en).
+You can also install this extension directly from the [Chrome Web Store](https://chromewebstore.google.com/detail/getittogether/ojfhpccogblegeiacmljgecdcmadecgg?hl=en).
 
 ## Usage
 
