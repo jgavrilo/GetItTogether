@@ -12,6 +12,8 @@ This Chrome extension provides a set of tools to enhance your productivity. It i
 
 ## Installation
 
+### From GitHub
+
 1. Clone this repository.
 2. Open Chrome and navigate to `chrome://extensions/`.
 3. Enable Developer Mode.
