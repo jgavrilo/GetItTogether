@@ -1,4 +1,4 @@
-# My Chrome Tool Set
+GetItTogether
 
 ## Description
 
@@ -19,7 +19,7 @@ This Chrome extension provides a set of tools to enhance your productivity. It i
 
 ### From Chrome Web Store
 
-You can also install this extension directly from the [Chrome Web Store](https://chrome.google.com/webstore/detail/my-chrome-tool-set/ojfhpccogblegeiacmljgecdcmadecgg/related?hl=en&authuser=0).
+You can also install this extension directly from the [Chrome Web Store]([https://chrome.google.com/webstore/detail/GetItTogether](https://chromewebstore.google.com/detail/getittogether/ojfhpccogblegeiacmljgecdcmadecgg?hl=en)).
 
 ## Usage
 
@@ -44,6 +44,10 @@ You can also install this extension directly from the [Chrome Web Store](https:/
 
 - Click on the extension icon and then click on "Setting" to launch the settings page.
 - Currently the settings only contains a theme picker with custom color selection.
+
+## Privacy Policy 
+
+Privacy policy avalible [here](https://jeremygavrilov.com/files/GetItTogether-Privacy-Policy.pdf).
 
 ## Contributing
 
