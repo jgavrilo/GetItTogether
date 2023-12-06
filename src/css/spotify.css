@@ -7,11 +7,17 @@ html, body {
 
 .spotify-container {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    top: 0;
+    left: 0;
+    width: 100vw; /* Full width of the viewport */
+    height: 100vh; /* Full height of the viewport */
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 iframe {
     border: none;
+    width: 100vw; /* 80% of the viewport width */
+    height: 100vh; /* 80% of the viewport height */
 }

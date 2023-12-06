@@ -37,28 +37,9 @@ async function displayGoogleTabs() {
         switchTab('local');
     });
     tabs.appendChild(localTab);
-
-    console.log(googleTaskLists);
-
-    googleTaskLists.forEach(async (taskList) => {
-        const button = document.createElement('button');
-        button.className = 'tab-button';
-        button.id = taskList.id;
-        button.textContent = taskList.title;
-        button.addEventListener('click', function() {
-            tabId = taskList.id;
-            switchTab(taskList.id);
-        });
-        tabs.appendChild(button);
-        
-        // Create a ul element for this Google Task List
-        const div = document.createElement('div');
-        div.id = `${taskList.id}-content`;
-        div.className = 'tab-content';
-        document.getElementById('inputSection').appendChild(div);
-    
-    });
   
+    await createTaskListTabs(googleTaskLists);
+
     // Add "+" button at the end
     const addButton = document.createElement('button');
     addButton.id = 'addNewListTab';
@@ -72,7 +53,33 @@ async function displayGoogleTabs() {
         }
     });
     tabs.appendChild(addButton);
+
+
 }
+
+async function createTaskListTabs(googleTaskLists) {
+    const tabs = document.querySelector('.tabs');
+
+    googleTaskLists.forEach(async (taskList) => {
+        // Create tab button for each task list
+        const button = document.createElement('button');
+        button.className = 'tab-button';
+        button.id = taskList.id;
+        button.textContent = taskList.title;
+        button.addEventListener('click', function() {
+            tabId = taskList.id;
+            switchTab(taskList.id);
+        });
+        tabs.appendChild(button);
+        
+        // Create a content div for each Google Task List
+        const div = document.createElement('div');
+        div.id = `${taskList.id}-content`;
+        div.className = 'tab-content';
+        document.getElementById('inputSection').appendChild(div);
+    });
+}
+
 
 // SECTION - Tabs
 // Function to switch tabs
@@ -121,7 +128,7 @@ async function switchTab(tabId) {
         var token = await getAuthToken();
         var tasks = await fetchGoogleTasks(token, tabId);
 
-        console.debug("Come back here to get the universal structure for tasks")
+        //console.debug("Come back here to get the universal structure for tasks")
         // Clear previous tasks
         const taskListElement = document.getElementById(`${tabId}-content`);
         if (taskListElement) {

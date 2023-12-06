@@ -42,7 +42,7 @@ async function fetchGoogleTaskLists(token) {
 // Function to fetch Google Tasks for a specific Task List
 async function fetchGoogleTasks(token, taskListId) {
     try {
-        const response = await fetch(`https://tasks.googleapis.com/tasks/v1/lists/${taskListId}/tasks`, {
+        const response = await fetch(`https://tasks.googleapis.com/tasks/v1/lists/${taskListId}/tasks?showCompleted=true`, {
             headers: {
                 'Authorization': `Bearer ${token}`,
                 'Cache-Control': 'no-cache'
@@ -189,18 +189,18 @@ async function clearCompletedGoogleTasks(token, taskListId) {
 // Function to delete a task list
 async function deleteGoogleTaskList(token, taskListId) {
     try {
-      const response = await fetch(`https://tasks.googleapis.com/tasks/v1/users/@me/lists/${taskListId}`, {
-        method: 'DELETE',
-        headers: {
-          'Authorization': `Bearer ${token}`
+        const response = await fetch(`https://tasks.googleapis.com/tasks/v1/users/@me/lists/${taskListId}`, {
+            method: 'DELETE',
+            headers: {
+            'Authorization': `Bearer ${token}`
+            }
+        });
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
         }
-      });
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      return true;
+        return true;
     } catch (error) {
-      console.error(`An error occurred: ${error}`);
+      console.error(`An error occurred while trying to delete a Google Task List: ${error}`);
       return false;
     }
 }

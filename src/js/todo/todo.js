@@ -121,12 +121,9 @@ function createTodoItem(text, isChecked) {
     container.appendChild(span); // Append to container
     
     li.appendChild(container); // Append the container to the list item
-
-    let clickTimer;
     
     // Add double-click event to the span
     span.addEventListener('click', function() {
-        clearTimeout(clickTimer); // Clear the single-click timer
     
         // Create an input element
         const input = document.createElement('input');
