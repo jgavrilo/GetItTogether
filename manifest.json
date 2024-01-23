@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "GetItTogether",
-  "version": "1.4.4.1",
+  "version": "1.4.4.2",
   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAni8XFkkQ4I+t3clNWVnatNTUPEHK59rsOv461uN3TdXtz4NDw0/2aymf+/LEHyp2Yky2JlyCnxAkndmPbcuDrXHvl7+O8XYeTavVn5Xm96A544dUeSzrzUjgWHGcR9ZJ+g9ahmukamW12TdggrtGJixY6n4rGIx0WW0XPOLUed93kZyN6B1axWj20MJ9Cax71LdVScNISfZ6qIrJZTJSnpnMCKZoo9ZlDIuwaFJn7zhSIajYF0quSazI/Cug9pUfw42f1O+abv46m0Mtzltr5exC4et5jRVEanQRhjwiCMLYP9aKceWkqo+9131arAb44lYrIlZtusT7XQ12By0Z/wIDAQAB",
   "description": "A tool set for chrome",
   "permissions": [

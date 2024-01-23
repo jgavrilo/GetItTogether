@@ -61,11 +61,6 @@ async function initiateGoogleLogin() {
   }
 }
 
-// Listen for the custom tabSwitched event to update the button
-document.addEventListener('tabSwitched', function() {
-  updateGoogleAccountButton();
-});
-
 // Function to get OAuth2 token
 async function getAuthToken() {
   return new Promise((resolve, reject) => {
@@ -78,7 +73,6 @@ async function getAuthToken() {
     });
   });
 }
-
 
 // Function to check if user is logged in
 async function checkLoginStatus() {
@@ -117,7 +111,7 @@ function loadLoginState() {
 // Updated function to update button based on login status
 async function updateGoogleAccountButton() {
   const loginButton = document.getElementById('googleAccountButton');
-  const logoutButton = document.getElementById('googleAccountLogoutButton'); // New Logout Button
+  const logoutButton = document.getElementById('googleAccountLogoutButton');
   const emailDisplay = document.getElementById('userEmail');
 
   if (!loginButton || !logoutButton || !emailDisplay) {
@@ -128,18 +122,29 @@ async function updateGoogleAccountButton() {
   const isLoggedIn = await checkLoginStatusWithoutLogin();
 
   if (isLoggedIn) {
-    const token = await getAuthToken();
-    const email = await getUserEmail(token);
-    emailDisplay.textContent = `Logged in as ${email}`;
-    loginButton.style.display = 'none'; // Hide Login Button
-    logoutButton.style.display = 'block'; // Show Logout Button
+    try {
+      const token = await getAuthToken({ 'interactive': false }); // Avoid interactive login prompt
+      if (token) {
+        const email = await getUserEmail(token);
+        emailDisplay.textContent = `Logged in as ${email}`;
+      } else {
+        emailDisplay.textContent = 'Not logged in';
+      }
+    } catch (error) {
+      console.error("Error:", JSON.stringify(error, null, 2));
+      emailDisplay.textContent = 'Error fetching user info';
+    }
+
+    loginButton.style.display = 'none';
+    logoutButton.style.display = 'block';
   } else {
-    emailDisplay.textContent = 'Login to connect to out google account';
-    loginButton.style.display = 'block'; // Show Login Button
-    loginButton.onclick = initiateGoogleLogin; // Restore original onclick event
-    logoutButton.style.display = 'none'; // Hide Logout Button
+    emailDisplay.textContent = 'Login to connect to your Google account';
+    loginButton.style.display = 'block';
+    loginButton.onclick = initiateGoogleLogin;
+    logoutButton.style.display = 'none';
   }
 }
+
 
 // New function to handle logout
 function logout() {
