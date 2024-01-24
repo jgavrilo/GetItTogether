@@ -1,14 +1,15 @@
-GetItTogether
+# GetItTogether
 
 ## Description
 
-This Chrome extension provides a set of tools to enhance your productivity. It includes a timer, to-do list, and theme settings, accessible right from your browser.
+A toolset for Chrome! Boost your productivity without leaving your browser! GetItTogether is a feature-rich chrome extension designed to make your life easier and more organized.
 
 ## Features
 
-- **Timer**: A simple timer that helps you manage your work and break times.
-- **To-Do List**: A basic to-do list to keep track of your tasks.
-- **Settings**: A settings page with theme selection.
+- **Timer**: Manage your work and break times efficiently with a user-friendly timer interface.
+- **To-Do List**: Never forget a task again! Keep track of your to-dos and check them off as you go. 
+- **Spotify**: A Spotify player that plays a studying playlist.
+- **Settings**: Make our toolset fit your vibe with the custom settings!
 
 ## Installation
 

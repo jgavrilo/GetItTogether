@@ -30,7 +30,7 @@ jobs:
       with:
         tag_name: ${{ steps.manifest.outputs.version }}
         release_name: Release ${{ steps.manifest.outputs.version }}
-        body: Minor Update - Typo in code
+        body: README update
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
