@@ -30,7 +30,7 @@ jobs:
       with:
         tag_name: ${{ steps.manifest.outputs.version }}
         release_name: Release ${{ steps.manifest.outputs.version }}
-        body: Minor Update - Bug fixes
+        body: Minor Update - Updated google button
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
