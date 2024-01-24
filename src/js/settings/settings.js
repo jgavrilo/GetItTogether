@@ -125,7 +125,7 @@ async function updateGoogleAccountButton() {
   }
 
   const isLoggedIn = await checkLoginStatusWithoutLogin();
-  console.log("Here I am");
+
   if (isLoggedIn) {
     const token = await getAuthToken();
     const email = await getUserEmail(token);
@@ -133,7 +133,7 @@ async function updateGoogleAccountButton() {
     loginButton.style.display = 'none'; // Hide Login Button
     logoutButton.style.display = 'block'; // Show Logout Button
   } else {
-    emailDisplay.textContent = 'Login to connect to out google account';
+    emailDisplay.textContent = 'Log in through your google account to sync your tasks';
     loginButton.style.display = 'block'; // Show Login Button
     loginButton.onclick = initiateGoogleLogin; // Restore original onclick event
     logoutButton.style.display = 'none'; // Hide Logout Button
